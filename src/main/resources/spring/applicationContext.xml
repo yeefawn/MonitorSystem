@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:task="http://www.springframework.org/schema/task"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://www.springframework.org/schema/context
+       http://www.springframework.org/schema/context/spring-context.xsd
+       http://www.springframework.org/schema/aop
+       http://www.springframework.org/schema/aop/spring-aop.xsd
+       http://www.springframework.org/schema/task
+       http://www.springframework.org/schema/task/spring-task.xsd">
+
+    <!-- 启动spring组件扫描 -->
+    <context:component-scan base-package="com.yeewenfag.service" />
+
+    <!-- 加载配置文件（可在代码中直接使用PropertyUtils.getProperty("属性名")获取属性值） -->
+    <bean id="propertyConfigurer" class="com.yeewenfag.utils.property.PropertyPlaceholder" >
+        <property name="locations">
+            <list>
+                <value>classpath*:config.properties</value>
+            </list>
+        </property>
+    </bean>
+
+    <!-- Druid 和 Spring 关联监控配置 start-->
+    <bean id="druid-stat-interceptor" class="com.alibaba.druid.support.spring.stat.DruidStatInterceptor" />
+    <bean id="druid-stat-pointcut" class="org.springframework.aop.support.JdkRegexpMethodPointcut" scope="prototype">
+        <property name="patterns">
+            <list>
+                <value>com.yeewenfag.service.impl.*</value>
+                <!--如果使用的是 hibernate 则这里也要扫描路径，但是 mybatis 不需要-->
+                <!--<value>com.youmeek.ssm.module.*.dao.*</value>-->
+            </list>
+        </property>
+    </bean>
+
+    <aop:config proxy-target-class="true">
+        <!-- pointcut-ref="druid-stat-pointcut" 这个报红没事-->
+        <aop:advisor advice-ref="druid-stat-interceptor" pointcut-ref="druid-stat-pointcut" />
+    </aop:config>
+
+    <!-- Druid 和 Spring 关联监控配置 end-->
+
+    <!-- 开启定时任务组件扫描 -->
+    <task:annotation-driven />
+
+    <!-- 开启Spring AOP注解扫描 -->
+    <aop:aspectj-autoproxy />
+</beans>

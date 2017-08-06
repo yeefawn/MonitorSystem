@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <!-- 配置mybatis的sessionFactory -->
+    <bean id="sessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean" >
+        <property name="dataSource" ref="dataSource" />
+        <!-- 指定mybatis配置文件地址，以提供sessionFactory初始化 -->
+        <property name="configLocation" value="classpath:mybatis/mybatis-config.xml" />
+    </bean>
+
+    <!-- 开启mapper自动代理 -->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer" >
+        <!-- 此处不能使用sqlSessionFactory属性，而是应该使用sqlSessionFactoryBeanName，以value形式传入spring中配置的beanID -->
+        <property name="sqlSessionFactoryBeanName" value="sessionFactory" />
+        <!-- 配置扫描包路径 -->
+        <property name="basePackage" value="com.yeewenfag.mapper" />
+    </bean>
+
+</beans>
