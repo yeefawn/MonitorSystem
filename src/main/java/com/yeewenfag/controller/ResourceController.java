@@ -40,7 +40,7 @@ public class ResourceController {
         return "resource/add";
     }
 
-    @RequestMapping(value = "/toAdd", method = RequestMethod.POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Result add(Resource resource) throws Exception {
 
