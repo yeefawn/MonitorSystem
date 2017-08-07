@@ -55,4 +55,12 @@ public interface ResourceService {
      * @throws Exception
      */
     List<Resource> findAllMenu() throws Exception;
+
+    /**
+     * 根据主键获取相应记录
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    Resource get(Long id) throws Exception;
 }

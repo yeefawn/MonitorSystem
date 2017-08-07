@@ -92,6 +92,9 @@
     <!--指定Maven用什么编码来呈现站点的HTML文件-->
     <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 
+    <!--自定maven控制台输出编码-->
+    <argLine>-Dfile.encoding=UTF-8</argLine>
+
   </properties>
   <!--版本变量设置 end-->
 

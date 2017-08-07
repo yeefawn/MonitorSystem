@@ -36,7 +36,7 @@
     <i class="Hui-iconfont">&#xe67f;</i> 首页
     <span class="c-gray en">&gt;</span> 管理员管理
     <span class="c-gray en">&gt;</span> 资源管理
-    <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" >
+    <a class="btn btn-success radius r" id="refresh" style="line-height:1.6em;margin-top:3px" href="javascript:void(0);" title="刷新" onclick="refreshWindow()" >
         <i class="Hui-iconfont">&#xe68f;</i>
     </a>
 </nav>
@@ -49,10 +49,10 @@
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
         <span class="l">
-            <a href="javascript:;" onclick="datadel()" class="btn btn-danger radius">
+            <a href="javascript:" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
-            <a href="javascript:;" onclick="admin_permission_add('添加权限节点','/resource/toAdd','380','420')" class="btn btn-primary radius">
+            <a href="javascript:" onclick="admin_permission_add('添加资源节点','/resource/toAdd','380','420')" class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加资源节点
             </a>
         </span>
@@ -68,14 +68,14 @@
             <th width="25"><input type="checkbox" name="" value=""></th>
             <th width="25">ID</th>
             <th width="80">资源名称</th>
-            <th width="80">资源类型</th>
+            <th width="60">资源类型</th>
             <th width="80">上级资源名称</th>
             <th width="160">请求地址</th>
             <th width="80">权限标识</th>
-            <th width="80">创建者</th>
-            <th width="80">创建时间</th>
-            <th width="80">修改者</th>
-            <th width="80">修改时间</th>
+            <th width="60">创建者</th>
+            <th width="120">创建时间</th>
+            <th width="60">修改者</th>
+            <th width="120">修改时间</th>
             <th width="50">状态</th>
             <th width="100">操作</th>
         </tr>
@@ -96,10 +96,10 @@
                 <td><fmt:formatDate value="${resource.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                 <td><span class="label ${resource.available == 1 ? "label-success" : ""} radius">${resource.available}</span></td>
                 <td>
-                    <a title="编辑" href="javascript:;" onclick="admin_permission_edit('角色编辑','admin-permission-add.html','1','','310')" class="ml-5" style="text-decoration:none">
+                    <a title="编辑" href="javascript:" onclick="admin_permission_edit('资源编辑','/resource/toEdit','${resource.id}','380','420')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6df;</i>
                     </a>
-                    <a title="删除" href="javascript:;" onclick="admin_permission_del(this,'1')" class="ml-5" style="text-decoration:none">
+                    <a title="删除" href="javascript:" onclick="admin_permission_del(this,'${resource.id}')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6e2;</i>
                     </a>
                 </td>
@@ -147,15 +147,15 @@
     }
     /*管理员-权限-编辑*/
     function admin_permission_edit(title,url,id,w,h){
-        layer_show(title,url,w,h);
+        layer_show(title,url + '/' + id,w,h);
     }
 
     /*管理员-权限-删除*/
     function admin_permission_del(obj,id){
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
-                type: 'POST',
-                url: '',
+                type: 'GET',
+                url: '/resource/delete/' + id,
                 dataType: 'json',
                 success: function(data){
                     $(obj).parents("tr").remove();
@@ -163,9 +163,13 @@
                 },
                 error:function(data) {
                     console.log(data.msg);
-                },
+                }
             });
         });
+    }
+
+    function refreshWindow(){
+        location.replace(location.href);
     }
 </script>
 </body>
