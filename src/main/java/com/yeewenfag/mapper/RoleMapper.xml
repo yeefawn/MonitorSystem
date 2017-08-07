@@ -271,7 +271,9 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
-  <select id="selectRoleNameByUserId" resultType="string">
-    SELECT r.role FROM m_role r WHERE r.id = (SELECT ur.role_id FROM m_user_role ur WHERE ur.user_id = #{id})
+  <select id="selectRoleNameByUserId" resultType="com.yeewenfag.domain.Role">
+    SELECT
+      <include refid="Base_Column_List" />
+    FROM m_role r WHERE r.id = (SELECT ur.role_id FROM m_user_role ur WHERE ur.user_id = #{id})
   </select>
 </mapper>

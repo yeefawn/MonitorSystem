@@ -1,5 +1,6 @@
 package com.yeewenfag.domain.vo;
 
+import com.yeewenfag.domain.Role;
 import com.yeewenfag.domain.User;
 
 /**
@@ -9,13 +10,13 @@ import com.yeewenfag.domain.User;
 public class UserVo extends User {
 
     // 角色名称
-    private String role_name;
+    private Role role;
 
-    public String getRole_name() {
-        return role_name;
+    public Role getRole() {
+        return role;
     }
 
-    public void setRole_name(String role_name) {
-        this.role_name = role_name;
+    public void setRole(Role role) {
+        this.role = role;
     }
 }

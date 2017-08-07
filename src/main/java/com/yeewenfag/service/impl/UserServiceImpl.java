@@ -16,7 +16,6 @@ import java.util.List;
  * @author 发
  * @create 2017-08-06 22:26
  */
-@SuppressWarnings("SpringJavaAutowiringInspection")
 @Service
 public class UserServiceImpl implements UserService {
 
@@ -26,13 +25,13 @@ public class UserServiceImpl implements UserService {
     @Override
     // timeout单位为秒
     @Transactional(readOnly = true, timeout = 120)
-    public PageInfo<User> query(int pageNum, int pageSize) {
+    public PageInfo<User> query(int pageNum, int pageSize) throws Exception {
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
         example.or(criteria);
         /*Page<User> page = PageHelper.startPage(pageNum, pageSize).doSelectPage(() -> userMapper.selectWithRoleNameByExample(example));*/
         PageHelper.startPage(pageNum, pageSize);
-        List<User> list = userMapper.selectWithRoleNameByExample(example);
+        List<User> list = userMapper.selectWithRoleByExample(example);
         PageInfo<User> page = new PageInfo<>(list);
         return page;
     }

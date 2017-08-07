@@ -15,5 +15,5 @@ public interface UserService {
      * @param pageSize
      * @return
      */
-    PageInfo<User> query(int pageNum, int pageSize);
+    PageInfo<User> query(int pageNum, int pageSize) throws Exception;
 }

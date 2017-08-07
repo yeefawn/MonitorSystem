@@ -2,6 +2,7 @@ package com.yeewenfag.mapper;
 
 import com.yeewenfag.domain.Resource;
 import com.yeewenfag.domain.ResourceExample;
+import com.yeewenfag.domain.vo.ResourceVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -18,6 +19,10 @@ public interface ResourceMapper {
     int insertSelective(Resource record);
 
     List<Resource> selectByExample(ResourceExample example);
+
+    List<ResourceVo> selectWithChildrenByExample(ResourceExample example);
+
+    List<ResourceVo> selectWithParentByExample(ResourceExample example);
 
     Resource selectByPrimaryKey(Long id);
 

@@ -19,7 +19,7 @@ public interface UserMapper {
 
     List<User> selectByExample(UserExample example);
 
-    List<User> selectWithRoleNameByExample(UserExample example);
+    List<User> selectWithRoleByExample(UserExample example);
 
     User selectByPrimaryKey(String id);
 

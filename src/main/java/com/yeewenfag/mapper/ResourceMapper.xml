@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yeewenfag.mapper.ResourceMapper">
+
   <resultMap id="BaseResultMap" type="com.yeewenfag.domain.Resource">
     <id column="id" jdbcType="BIGINT" property="id" />
     <result column="name" jdbcType="VARCHAR" property="name" />
@@ -16,6 +17,15 @@
     <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
     <result column="available" jdbcType="INTEGER" property="available" />
   </resultMap>
+
+  <resultMap id="ExtendResultMap" type="com.yeewenfag.domain.vo.ResourceVo" extends="BaseResultMap">
+    <collection property="submenu" javaType="ArrayList" ofType="com.yeewenfag.domain.vo.ResourceVo" column="id" select="selectChildren" fetchType="eager" />
+  </resultMap>
+
+  <resultMap id="ParentResultMap" type="com.yeewenfag.domain.vo.ResourceVo" extends="BaseResultMap">
+    <association property="parent" javaType="com.yeewenfag.domain.Resource" column="parent_id"  select="selectByPrimaryKey" fetchType="eager" />
+  </resultMap>
+
   <sql id="Example_Where_Clause">
     <where>
       <foreach collection="oredCriteria" item="criteria" separator="or">
@@ -45,6 +55,7 @@
       </foreach>
     </where>
   </sql>
+
   <sql id="Update_By_Example_Where_Clause">
     <where>
       <foreach collection="example.oredCriteria" item="criteria" separator="or">
@@ -74,10 +85,12 @@
       </foreach>
     </where>
   </sql>
+
   <sql id="Base_Column_List">
     id, name, type, url, priority, parent_id, parent_ids, permission, create_user, create_time, 
     modify_user, modify_time, available
   </sql>
+
   <select id="selectByExample" parameterType="com.yeewenfag.domain.ResourceExample" resultMap="BaseResultMap">
     select
     <if test="distinct">
@@ -92,22 +105,66 @@
       order by ${orderByClause}
     </if>
   </select>
+
+  <select id="selectWithParentByExample" parameterType="com.yeewenfag.domain.ResourceExample" resultMap="ParentResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectWithChildrenByExample" parameterType="com.yeewenfag.domain.ResourceExample" resultMap="ExtendResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_resource
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+
+  <select id="selectChildren" parameterType="long" resultMap="ExtendResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from m_resource
+    <where>
+       parent_id = #{id} and available = 1
+    </where>
+    order by priority
+  </select>
+
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from m_resource
     where id = #{id,jdbcType=BIGINT}
   </select>
+
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from m_resource
     where id = #{id,jdbcType=BIGINT}
   </delete>
+
   <delete id="deleteByExample" parameterType="com.yeewenfag.domain.ResourceExample">
     delete from m_resource
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </delete>
+
   <insert id="insert" parameterType="com.yeewenfag.domain.Resource">
     insert into m_resource (id, name, type, 
       url, priority, parent_id, 
@@ -120,6 +177,7 @@
       #{createTime,jdbcType=TIMESTAMP}, #{modifyUser,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, 
       #{available,jdbcType=INTEGER})
   </insert>
+
   <insert id="insertSelective" parameterType="com.yeewenfag.domain.Resource">
     insert into m_resource
     <trim prefix="(" suffix=")" suffixOverrides=",">
@@ -205,12 +263,14 @@
       </if>
     </trim>
   </insert>
+
   <select id="countByExample" parameterType="com.yeewenfag.domain.ResourceExample" resultType="java.lang.Long">
     select count(*) from m_resource
     <if test="_parameter != null">
       <include refid="Example_Where_Clause" />
     </if>
   </select>
+
   <update id="updateByExampleSelective" parameterType="map">
     update m_resource
     <set>
@@ -258,6 +318,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
   <update id="updateByExample" parameterType="map">
     update m_resource
     set id = #{record.id,jdbcType=BIGINT},
@@ -277,6 +338,7 @@
       <include refid="Update_By_Example_Where_Clause" />
     </if>
   </update>
+
   <update id="updateByPrimaryKeySelective" parameterType="com.yeewenfag.domain.Resource">
     update m_resource
     <set>
@@ -319,6 +381,7 @@
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
+
   <update id="updateByPrimaryKey" parameterType="com.yeewenfag.domain.Resource">
     update m_resource
     set name = #{name,jdbcType=VARCHAR},
@@ -335,4 +398,5 @@
       available = #{available,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
 </mapper>

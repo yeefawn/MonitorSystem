@@ -10,6 +10,9 @@
     <result column="email" jdbcType="VARCHAR" property="email" />
     <result column="telephone" jdbcType="VARCHAR" property="telephone" />
     <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="login_count" jdbcType="BIGINT" property="loginCount" />
+    <result column="last_login_time" jdbcType="TIMESTAMP" property="lastLoginTime" />
+    <result column="last_login_ip" jdbcType="VARCHAR" property="lastLoginIp" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_user" jdbcType="VARCHAR" property="modifyUser" />
@@ -18,7 +21,7 @@
   </resultMap>
 
   <resultMap id="ExtendResultMap" type="com.yeewenfag.domain.vo.UserVo" extends="BaseResultMap">
-    <association property="role_mame" column="id" javaType="string" select="com.yeewenfag.domain.Role.selectRoleNameByUserId" fetchType="eager"/>
+    <association property="role" column="id" javaType="com.yeewenfag.domain.Role" select="com.yeewenfag.domain.Role.selectRoleNameByUserId" fetchType="eager"/>
   </resultMap>
 
   <sql id="Example_Where_Clause">
@@ -82,8 +85,8 @@
   </sql>
 
   <sql id="Base_Column_List">
-    id, username, password, fullname, email, telephone, remark, create_user, create_time, 
-    modify_user, modify_time, locked
+    id, username, password, fullname, email, telephone, remark, login_count, last_login_time, 
+    last_login_ip, create_user, create_time, modify_user, modify_time, locked
   </sql>
 
   <select id="selectByExample" parameterType="com.yeewenfag.domain.UserExample" resultMap="BaseResultMap">
@@ -101,7 +104,7 @@
     </if>
   </select>
 
-  <select id="selectWithRoleNameByExample" parameterType="com.yeewenfag.domain.UserExample" resultMap="ExtendResultMap">
+  <select id="selectWithRoleByExample" parameterType="com.yeewenfag.domain.UserExample" resultMap="ExtendResultMap">
     select
     <if test="distinct">
       distinct
@@ -138,12 +141,14 @@
   <insert id="insert" parameterType="com.yeewenfag.domain.User">
     insert into m_user (id, username, password, 
       fullname, email, telephone, 
-      remark, create_user, create_time, 
+      remark, login_count, last_login_time, 
+      last_login_ip, create_user, create_time, 
       modify_user, modify_time, locked
       )
     values (#{id,jdbcType=VARCHAR}, #{username,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, 
       #{fullname,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, #{telephone,jdbcType=VARCHAR}, 
-      #{remark,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{remark,jdbcType=VARCHAR}, #{loginCount,jdbcType=BIGINT}, #{lastLoginTime,jdbcType=TIMESTAMP}, 
+      #{lastLoginIp,jdbcType=VARCHAR}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
       #{modifyUser,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, #{locked,jdbcType=INTEGER}
       )
   </insert>
@@ -171,6 +176,15 @@
       </if>
       <if test="remark != null">
         remark,
+      </if>
+      <if test="loginCount != null">
+        login_count,
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time,
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip,
       </if>
       <if test="createUser != null">
         create_user,
@@ -209,6 +223,15 @@
       </if>
       <if test="remark != null">
         #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="loginCount != null">
+        #{loginCount,jdbcType=BIGINT},
+      </if>
+      <if test="lastLoginTime != null">
+        #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        #{lastLoginIp,jdbcType=VARCHAR},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
@@ -259,6 +282,15 @@
       <if test="record.remark != null">
         remark = #{record.remark,jdbcType=VARCHAR},
       </if>
+      <if test="record.loginCount != null">
+        login_count = #{record.loginCount,jdbcType=BIGINT},
+      </if>
+      <if test="record.lastLoginTime != null">
+        last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="record.lastLoginIp != null">
+        last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
+      </if>
       <if test="record.createUser != null">
         create_user = #{record.createUser,jdbcType=VARCHAR},
       </if>
@@ -289,6 +321,9 @@
       email = #{record.email,jdbcType=VARCHAR},
       telephone = #{record.telephone,jdbcType=VARCHAR},
       remark = #{record.remark,jdbcType=VARCHAR},
+      login_count = #{record.loginCount,jdbcType=BIGINT},
+      last_login_time = #{record.lastLoginTime,jdbcType=TIMESTAMP},
+      last_login_ip = #{record.lastLoginIp,jdbcType=VARCHAR},
       create_user = #{record.createUser,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       modify_user = #{record.modifyUser,jdbcType=VARCHAR},
@@ -320,6 +355,15 @@
       <if test="remark != null">
         remark = #{remark,jdbcType=VARCHAR},
       </if>
+      <if test="loginCount != null">
+        login_count = #{loginCount,jdbcType=BIGINT},
+      </if>
+      <if test="lastLoginTime != null">
+        last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="lastLoginIp != null">
+        last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
+      </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
       </if>
@@ -347,6 +391,9 @@
       email = #{email,jdbcType=VARCHAR},
       telephone = #{telephone,jdbcType=VARCHAR},
       remark = #{remark,jdbcType=VARCHAR},
+      login_count = #{loginCount,jdbcType=BIGINT},
+      last_login_time = #{lastLoginTime,jdbcType=TIMESTAMP},
+      last_login_ip = #{lastLoginIp,jdbcType=VARCHAR},
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       modify_user = #{modifyUser,jdbcType=VARCHAR},
