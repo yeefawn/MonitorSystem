@@ -3,7 +3,9 @@ package com.yeewenfag.service;
 
 import com.github.pagehelper.PageInfo;
 import com.yeewenfag.domain.Resource;
+import com.yeewenfag.domain.Role;
 import com.yeewenfag.domain.vo.ResourceVo;
+import org.w3c.dom.ls.LSInput;
 
 import java.util.List;
 
@@ -16,7 +18,7 @@ public interface ResourceService {
      * @return
      * @throws Exception
      */
-    PageInfo<ResourceVo> query(int pageNum, int pageSize) throws Exception;
+    PageInfo<ResourceVo> query(ResourceVo resource, int pageNum, int pageSize) throws Exception;
 
     /**
      * 添加资源
@@ -63,4 +65,12 @@ public interface ResourceService {
      * @throws Exception
      */
     Resource get(Long id) throws Exception;
+
+    /**
+     * 根据角色获取资源树
+     * @return
+     * @throws Exception
+     */
+    List<ResourceVo> getMainMenuByRole(String role_id) throws Exception;
+
 }

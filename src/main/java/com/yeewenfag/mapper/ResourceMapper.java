@@ -33,4 +33,6 @@ public interface ResourceMapper {
     int updateByPrimaryKeySelective(Resource record);
 
     int updateByPrimaryKey(Resource record);
+
+    List<ResourceVo> getMainMenuByRole(String role_id);
 }

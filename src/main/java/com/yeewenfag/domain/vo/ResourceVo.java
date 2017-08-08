@@ -10,6 +10,10 @@ public class ResourceVo extends Resource {
 
     private Resource parent;
 
+    private String createUserName;
+
+    private String modifyUserName;
+
     public List<ResourceVo> getSubmenu() {
         return submenu;
     }
@@ -24,5 +28,22 @@ public class ResourceVo extends Resource {
 
     public void setParent(Resource parent) {
         this.parent = parent;
+    }
+
+
+    public String getCreateUserName() {
+        return createUserName;
+    }
+
+    public void setCreateUserName(String createUserName) {
+        this.createUserName = createUserName;
+    }
+
+    public String getModifyUserName() {
+        return modifyUserName;
+    }
+
+    public void setModifyUserName(String modifyUserName) {
+        this.modifyUserName = modifyUserName;
     }
 }

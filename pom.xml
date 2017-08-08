@@ -26,6 +26,7 @@
     <mybatis-spring.version>1.2.4</mybatis-spring.version>
     <quartz.version>2.3.0</quartz.version>
     <mybatis-pagehelper.version>5.0.4</mybatis-pagehelper.version>
+    <shiro.version>1.4.0</shiro.version>
 
 
     <!--下面这两个是springAOP需要用到-->
@@ -54,6 +55,7 @@
     <httpclient.version>4.3.3</httpclient.version>
     <jackson-databind.version>2.4.2</jackson-databind.version>
     <fastjson.version>1.2.21</fastjson.version>
+    <ehcache.version>3.2.2</ehcache.version>
     <!--架包版本变量 end-->
 
     <!--插件版本变量 start-->
@@ -369,6 +371,37 @@
       <artifactId>quartz</artifactId>
       <version>${quartz.version}</version>
     </dependency>
+
+    <!-- shiro相关依赖包 start -->
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-core</artifactId>
+      <version>${shiro.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-web</artifactId>
+      <version>${shiro.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-spring</artifactId>
+      <version>${shiro.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-ehcache</artifactId>
+      <version>${shiro.version}</version>
+    </dependency>
+    <!-- shiro相关依赖包 end -->
+
+    <!--ehcache依赖包-->
+    <dependency>
+      <groupId>org.ehcache</groupId>
+      <artifactId>ehcache</artifactId>
+      <version>${ehcache.version}</version>
+    </dependency>
+
 
   </dependencies>
   <!--架包依赖 end-->

@@ -35,19 +35,17 @@
 <nav class="breadcrumb">
     <i class="Hui-iconfont">&#xe67f;</i> 首页
     <span class="c-gray en">&gt;</span> 系统管理
-    <span class="c-gray en">&gt;</span> 资源管理
+    <span class="c-gray en">&gt;</span> 角色管理
     <a class="btn btn-success radius r" id="refresh" style="line-height:1.6em;margin-top:3px" href="javascript:void(0);" title="刷新" onclick="refreshWindow()" >
         <i class="Hui-iconfont">&#xe68f;</i>
     </a>
 </nav>
 <div class="page-container">
     <div class="text-c">
-        <form class="Huiform" method="post" action="/resource/query" target="_self">
+        <form class="Huiform" method="post" action="/role/list" target="_self">
             <input type="hidden" name="pageNum" value="" id="pageNum">
-            <input type="text" class="input-text" style="width:200px" placeholder="资源名称" id="name" name="name" value="${condition.name}">
-            <input type="text" class="input-text" style="width:200px" placeholder="权限标识" id="permission" name="permission" value="${condition.permission}">
-            <input type="text" class="input-text" style="width:200px" placeholder="请求地址" id="url" name="url" value="${condition.url}">
-            <button type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜资源节点</button>
+            <input type="text" class="input-text" style="width:200px" placeholder="角色名称" id="role" name="role" value="${role}">
+            <button type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜角色</button>
         </form>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -55,8 +53,8 @@
             <a href="javascript:" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
-            <a href="javascript:" onclick="admin_permission_add('添加资源节点','/resource/toAdd','380','420')" class="btn btn-primary radius">
-                <i class="Hui-iconfont">&#xe600;</i> 添加资源节点
+            <a href="javascript:" onclick="admin_role_add('添加角色','/role/toAdd','800')" class="btn btn-primary radius">
+                <i class="Hui-iconfont">&#xe600;</i> 添加角色
             </a>
         </span>
         <span class="r">
@@ -65,46 +63,38 @@
     <table class="table table-border table-bordered table-bg">
         <thead>
         <tr>
-            <th scope="col" colspan="14">资源节点</th>
+            <th scope="col" colspan="10">角色列表</th>
         </tr>
         <tr class="text-c">
             <th width="25"><input type="checkbox" name="" value=""></th>
             <th width="25">ID</th>
-            <th width="80">资源名称</th>
-            <th width="60">资源类型</th>
-            <th width="80">上级资源名称</th>
-            <th width="150">请求地址</th>
-            <th width="90">权限标识</th>
-            <th width="60">创建者</th>
+            <th width="100">角色名称</th>
+            <th width="200">角色描述</th>
+            <th width="100">创建者</th>
             <th width="120">创建时间</th>
-            <th width="60">修改者</th>
+            <th width="100">修改者</th>
             <th width="120">修改时间</th>
-            <th width="30">排序</th>
-            <th width="50">状态</th>
+            <th width="80">状态</th>
             <th width="100">操作</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${page.list}" var="resource" varStatus="s">
+        <c:forEach items="${page.list}" var="role" varStatus="s">
             <tr class="text-c">
-                <td><input type="checkbox" value="${resource.id}" name="id"></td>
+                <td><input type="checkbox" value="${role.id}" name="id"></td>
                 <td>${s.index + 1}</td>
-                <td>${resource.name}</td>
-                <td>${typeMapping[resource.type]}</td>
-                <td>${resource.parent.name}</td>
-                <td>${resource.url}</td>
-                <td>${resource.permission}</td>
-                <td>${resource.createUserName == null || resource.createUserName == ""? resource.createUser : resource.createUserName}</td>
-                <td><fmt:formatDate value="${resource.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                <td>${resource.modifyUserName == null || resource.modifyUserName == ""? resource.modifyUser : resource.modifyUserName}</td>
-                <td><fmt:formatDate value="${resource.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                <td>${resource.priority}</td>
-                <td><span class="label ${resource.available == 1 ? "label-success" : ""} radius">${resource.available == 1 ? "可用" : "不可用"}</span></td>
+                <td>${role.role}</td>
+                <td>${role.description}</td>
+                <td>${role.createUserName == null || role.createUserName == ""? role.createUser : role.createUserName}</td>
+                <td><fmt:formatDate value="${role.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                <td>${role.modifyUserName == null || role.modifyUserName == ""? role.modifyUser : role.modifyUserName}</td>
+                <td><fmt:formatDate value="${role.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                <td><span class="label ${role.available == 1 ? "label-success" : ""} radius">${role.available == 1 ? "可用" : "不可用"}</span></td>
                 <td>
-                    <a title="编辑" href="javascript:" onclick="admin_permission_edit('资源编辑','/resource/toEdit','${resource.id}','380','450')" class="ml-5" style="text-decoration:none">
+                    <a title="编辑" href="javascript:" onclick="admin_role_edit('资源编辑','/role/toEdit','${role.id}','800')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6df;</i>
                     </a>
-                    <a title="删除" href="javascript:" onclick="admin_permission_del(this,'${resource.id}')" class="ml-5" style="text-decoration:none">
+                    <a title="删除" href="javascript:" onclick="admin_role_del(this,'${role.id}')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6e2;</i>
                     </a>
                 </td>
@@ -147,21 +137,21 @@
         w		弹出层宽度（缺省调默认值）
         h		弹出层高度（缺省调默认值）
     */
-    /*管理员-权限-添加*/
-    function admin_permission_add(title,url,w,h){
+    /*管理员-角色-添加*/
+    function admin_role_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
-    /*管理员-权限-编辑*/
-    function admin_permission_edit(title,url,id,w,h){
+    /*管理员-角色-编辑*/
+    function admin_role_edit(title,url,id,w,h){
         layer_show(title,url + '/' + id,w,h);
     }
 
-    /*管理员-权限-删除*/
-    function admin_permission_del(obj,id){
+    /*管理员-角色-删除*/
+    function admin_role_del(obj,id){
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
                 type: 'GET',
-                url: '/resource/delete/' + id,
+                url: '/role/delete/' + id,
                 dataType: 'json',
                 success: function(data){
                     $(obj).parents("tr").remove();

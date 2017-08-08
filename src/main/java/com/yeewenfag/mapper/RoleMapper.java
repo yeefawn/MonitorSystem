@@ -2,6 +2,7 @@ package com.yeewenfag.mapper;
 
 import com.yeewenfag.domain.Role;
 import com.yeewenfag.domain.RoleExample;
+import com.yeewenfag.domain.vo.RoleVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -17,9 +18,11 @@ public interface RoleMapper {
 
     int insertSelective(Role record);
 
-    List<Role> selectByExample(RoleExample example);
+    List<RoleVo> selectByExample(RoleExample example);
 
-    Role selectByPrimaryKey(String id);
+    List<Role> selectAllRole();
+
+    RoleVo selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") Role record, @Param("example") RoleExample example);
 
@@ -28,4 +31,8 @@ public interface RoleMapper {
     int updateByPrimaryKeySelective(Role record);
 
     int updateByPrimaryKey(Role record);
+
+    int batchInsertRoleAndResourceAssociation(RoleVo roleVo);
+
+    int dropRoleAndResourceAssociation(String role_id);
 }

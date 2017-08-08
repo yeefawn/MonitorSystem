@@ -11,7 +11,8 @@ public enum ResultEnum {
     FORMAT_ERROR(105, "数据格式错误"),
     PRIMARYKEY_NULL(106, "主键为空"),
     UPDATE_FAIL(107, "数据更新失败"),
-    DELETE_FAIL(108, "数据删除失败")
+    DELETE_FAIL(108, "数据删除失败"),
+    NAME_NOT_NULL(109, "名称不能为空"),
     ;
 
     private Integer code;

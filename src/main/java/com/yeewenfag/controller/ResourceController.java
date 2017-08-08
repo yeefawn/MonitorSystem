@@ -10,10 +10,11 @@ import com.yeewenfag.utils.property.PropertyUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Controller
 @RequestMapping("/resource")
@@ -29,7 +30,22 @@ public class ResourceController {
         int pageNum = 1;
         int pageSize = new Integer(PropertyUtils.getProperty("sys.defaultPageSize"));
         // 查询资源列表并把值放入request域
-        model.addAttribute("page", resourceService.query(pageNum,pageSize));
+        model.addAttribute("page", resourceService.query(null, pageNum,pageSize));
+        model.addAttribute("typeMapping", createTypeMapping());
+
+        return "resource/list";
+    }
+
+    @RequestMapping(value = "/list",method = RequestMethod.POST)
+    public String query(@ModelAttribute("condition") ResourceVo condition, Integer pageNum, Model model) throws Exception {
+        // 设置分页参数
+        if (pageNum == null || pageNum <= 0){
+            pageNum = 1;
+        }
+        int pageSize = new Integer(PropertyUtils.getProperty("sys.defaultPageSize"));
+        // 查询资源列表并把值放入request域
+        model.addAttribute("page", resourceService.query(condition, pageNum,pageSize));
+        model.addAttribute("typeMapping", createTypeMapping());
 
         return "resource/list";
     }
@@ -46,6 +62,9 @@ public class ResourceController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Result add(Resource resource) throws Exception {
+
+        // TODO 根据身份信息设置创建者
+        resource.setCreateUser("admin");
 
         resourceService.add(resource);
 
@@ -67,6 +86,10 @@ public class ResourceController {
     @ResponseBody
     public Result edit(Long id, ResourceVo resource) throws Exception {
 
+        // TODO 根据身份信息设置创建者
+        resource.setModifyUser("admin");
+        resource.setModifyTime(new Date());
+
         resourceService.update(id, resource);
 
         return ResultUtils.success(ResultEnum.PROCESS_SUCCESS, null);
@@ -79,5 +102,21 @@ public class ResourceController {
         resourceService.delete(id);
 
         return ResultUtils.success(ResultEnum.PROCESS_SUCCESS, null);
+    }
+
+    private Map<String, String> createTypeMapping() {
+        Map<String, String> typeMapping = new HashMap<>();
+        typeMapping.put("00", "主菜单");
+        typeMapping.put("01", "一级菜单");
+        typeMapping.put("02", "二级菜单");
+        typeMapping.put("03", "三级菜单");
+        typeMapping.put("04", "四级菜单");
+        typeMapping.put("05", "五级菜单");
+        typeMapping.put("06", "六级菜单");
+        typeMapping.put("07", "七级菜单");
+        typeMapping.put("08", "八级菜单");
+        typeMapping.put("09", "九级菜单");
+        typeMapping.put("10", "操作");
+        return typeMapping;
     }
 }

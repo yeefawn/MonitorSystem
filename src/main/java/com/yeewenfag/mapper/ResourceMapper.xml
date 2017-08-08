@@ -23,7 +23,9 @@
   </resultMap>
 
   <resultMap id="ParentResultMap" type="com.yeewenfag.domain.vo.ResourceVo" extends="BaseResultMap">
-    <association property="parent" javaType="com.yeewenfag.domain.Resource" column="parent_id"  select="selectByPrimaryKey" fetchType="eager" />
+    <association property="parent" javaType="com.yeewenfag.domain.Resource" column="parent_id"  select="selectByPrimaryKey" />
+    <association property="createUserName" javaType="string" column="create_user"  select="com.yeewenfag.mapper.UserMapper.selectNameByPrimaryKey" />
+    <association property="modifyUserName" javaType="string" column="modify_user"  select="com.yeewenfag.mapper.UserMapper.selectNameByPrimaryKey" />
   </resultMap>
 
   <sql id="Example_Where_Clause">
@@ -398,5 +400,31 @@
       available = #{available,jdbcType=INTEGER}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="getMainMenuByRole" parameterType="string" resultMap="ExtendResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM m_resource
+    <where>
+      and type = '00'
+      and available = 1
+      <if test="role_id != null" >
+      and id IN (SELECT resource_id FROM m_role_resource WHERE role_id = #{role_id})
+      </if>
+    </where>
+    order by priority
+  </select>
+
+  <select id="getMainMenuByRoleTemp" parameterType="string" resultMap="ExtendResultMap" >
+    SELECT
+    <include refid="Base_Column_List"/>
+    FROM m_resource
+    <where>
+      and type = '00'
+      and available = 1
+      and id IN (SELECT resource_id FROM m_role_resource WHERE role_id = #{role_id})
+    </where>
+    order by priority
+  </select>
 
 </mapper>

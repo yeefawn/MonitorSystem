@@ -1,14 +1,12 @@
 <%--
   Created by IntelliJ IDEA.
   User: Administrator
-  Date: 2017-8-7
-  Time: 15:42
+  Date: 2017-8-8
+  Time: 10:44
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -29,72 +27,74 @@
     <script type="text/javascript" src="/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
     <![endif]-->
-    <title>添加资源节点</title>
+    <!--/meta 作为公共模版分离出去-->
+
+    <title>编辑角色</title>
 </head>
 <body>
 <article class="page-container">
-    <form class="form form-horizontal" id="form-resource-add" method="post">
-        <input type="hidden" name="id" value="${resource.id}">
+    <form action="/role/edit" method="post" class="form form-horizontal" id="form-admin-role-add">
+        <input type="hidden" name="id" value="${role.id}">
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>资源名称：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>角色名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="${resource.name}" placeholder="资源名称" id="name" name="name">
+                <input type="text" class="input-text" value="${role.role}" placeholder="角色名称" id="role" name="role">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>资源类型：</label>
+            <label class="form-label col-xs-4 col-sm-3">角色描述：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <select class="select-box" name="type" size="1">
-                    <option value="0" ${fn:substring(resource.type, 0, 1) == "0" ? "selected" : ""}>菜单</option>
-                    <option value="1" ${fn:substring(resource.type, 0, 1) == "1" ? "selected" : ""}>操作</option>
-                </select>
+                <input type="text" class="input-text" value="${role.description}" placeholder="角色描述" id="description" name="description">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>上级资源：</label>
+            <label class="form-label col-xs-4 col-sm-3">角色权限：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <select class="select-box" name="parentId" size="1">
-                    <option value=""></option>
-                    <c:forEach var="menu" items="${menus}">
-                        <option value="${menu.id}" ${menu.id == resource.parentId ? "selected" : ""}>${menu.name}</option>
-                    </c:forEach>
-                </select>
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>请求地址：</label>
-            <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <input type="text" class="input-text" value="${resource.url}" placeholder="请求地址" id="url" name="url">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限标识：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="${resource.permission}" placeholder="权限标识(示例:'xxx:xxx')" id="permission" name="permission">
-            </div>
-        </div>
-        <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>排序序号：</label>
-            <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="${resource.priority}" placeholder="排序序号" name="priority" id="priority">
+                <c:forEach items="${resources}" var="main" >
+                    <dl class="permission-list">
+                        <dt>
+                            <label>
+                                <input type="checkbox" value="${main.id}" name="resource_ids" id="" ${role.resourceIds.contains(main.id.toString()) ? "checked" : ""}>
+                                    ${main.name}</label>
+                        </dt>
+                        <dd>
+                            <c:forEach items="${main.submenu}" var="mune" >
+                                <dl class="cl permission-list2">
+                                    <dt>
+                                        <label>
+                                            <input type="checkbox" value="${mune.id}" name="resource_ids" id="" ${role.resourceIds.contains(mune.id.toString()) ? "checked" : ""}>
+                                                ${mune.name}</label>
+                                    </dt>
+                                    <dd>
+                                        <c:forEach items="${mune.submenu}" var="action">
+                                            <label class="">
+                                                <input type="checkbox" value="${action.id}" name="resource_ids" id="" ${role.resourceIds.contains(action.id.toString()) ? "checked" : ""}>
+                                                    ${action.name}</label>
+                                        </c:forEach>
+                                    </dd>
+                                </dl>
+                            </c:forEach>
+                        </dd>
+                    </dl>
+                </c:forEach>
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>状态：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <div class="radio-box">
-                    <input name="available" type="radio" id="available-1" value="1" ${resource.available == 1 ? "checked" : ""}>
+                    <input name="available" type="radio" id="available-1" value="1" ${role.available == 1 ? "checked" : ""}>
                     <label for="available-1">可用</label>
                 </div>
                 <div class="radio-box">
-                    <input name="available" type="radio" id="available-2" value="0" ${resource.available == 0 ? "checked" : ""}>
+                    <input name="available" type="radio" id="available-2" value="0" ${role.available == 0 ? "checked" : ""}>
                     <label for="available-2">不可用</label>
                 </div>
             </div>
         </div>
         <div class="row cl">
             <div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
-                <input class="btn btn-primary radius" type="submit" value="&nbsp;&nbsp;提交&nbsp;&nbsp;">
+                <button type="submit" class="btn btn-success radius" id="admin-role-save" name="admin-role-save"><i class="icon-ok"></i> 确定</button>
             </div>
         </div>
     </form>
@@ -112,36 +112,37 @@
 <script type="text/javascript" src="/lib/jquery.validation/1.14.0/messages_zh.js"></script>
 <script type="text/javascript">
     $(function(){
-        $('.skin-minimal input').iCheck({
-            checkboxClass: 'icheckbox-blue',
-            radioClass: 'iradio-blue',
-            increaseArea: '20%'
+        $(".permission-list dt input:checkbox").click(function(){
+            $(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+        });
+        $(".permission-list2 dd input:checkbox").click(function(){
+            var l =$(this).parent().parent().find("input:checked").length;
+            var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
+            if($(this).prop("checked")){
+                $(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+                $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+            }
+            else{
+                if(l==0){
+                    $(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+                }
+                if(l2==0){
+                    $(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+                }
+            }
         });
 
-        jQuery.validator.addMethod('permStyle', function(value, element, param) {
-            var score = /[a-z]+:[a-z]+/i;
-            return this.optional(element) || score.test(value);
-        }, "请确保输入的格式为: XXX:XXX)");
-
-        $("#form-resource-add").validate({
+        $("#form-admin-role-add").validate({
             rules:{
-                name:{
+                roleName:{
                     required:true,
-                    minlength:4,
-                    maxlength:16
                 },
-                permission:{
-                    required:true,
-                    permStyle:true
-                }
             },
             onkeyup:false,
             focusCleanup:true,
             success:"valid",
             submitHandler:function(form){
                 $(form).ajaxSubmit({
-                    type: 'post',
-                    url: "${pageContext.request.contextPath}/resource/edit" ,
                     success: function(data){
                         layer.msg('添加成功!',{icon:1,time:1000},function(){
                             closeWindow();

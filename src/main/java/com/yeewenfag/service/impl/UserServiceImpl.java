@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yeewenfag.domain.User;
 import com.yeewenfag.domain.UserExample;
+import com.yeewenfag.domain.vo.UserVo;
 import com.yeewenfag.mapper.UserMapper;
 import com.yeewenfag.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,14 +26,37 @@ public class UserServiceImpl implements UserService {
     @Override
     // timeout单位为秒
     @Transactional(readOnly = true, timeout = 120)
-    public PageInfo<User> query(int pageNum, int pageSize) throws Exception {
+    public PageInfo<UserVo> query(UserVo user, int pageNum, int pageSize) throws Exception {
         UserExample example = new UserExample();
         UserExample.Criteria criteria = example.createCriteria();
+
+        // 设置条件
+        if (user != null) {
+            if (user.getUsername() != null && !user.getUsername().equals("")) {
+                criteria.andUsernameEqualTo("%" + user.getUsername() + "%");
+            }
+            if (user.getFullname() != null && !user.getFullname().equals("")) {
+                criteria.andFullnameEqualTo("%" + user.getFullname() + "%");
+            }
+            if (user.getEmail() != null && !user.getEmail().equals("")) {
+                criteria.andEmailEqualTo("%" + user.getEmail() + "%");
+            }
+            if (user.getTelephone() != null && !user.getTelephone().equals("")) {
+                criteria.andTelephoneEqualTo("%" + user.getTelephone() + "%");
+            }
+        }
+
         example.or(criteria);
         /*Page<User> page = PageHelper.startPage(pageNum, pageSize).doSelectPage(() -> userMapper.selectWithRoleNameByExample(example));*/
         PageHelper.startPage(pageNum, pageSize);
-        List<User> list = userMapper.selectWithRoleByExample(example);
-        PageInfo<User> page = new PageInfo<>(list);
+        List<UserVo> list = userMapper.selectWithRoleByExample(example);
+        PageInfo<UserVo> page = new PageInfo<>(list);
         return page;
+    }
+
+    @Override
+    @Transactional
+    public void add(UserVo userVo) throws Exception {
+
     }
 }

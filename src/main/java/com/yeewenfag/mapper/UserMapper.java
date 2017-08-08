@@ -2,6 +2,7 @@ package com.yeewenfag.mapper;
 
 import com.yeewenfag.domain.User;
 import com.yeewenfag.domain.UserExample;
+import com.yeewenfag.domain.vo.UserVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -19,7 +20,7 @@ public interface UserMapper {
 
     List<User> selectByExample(UserExample example);
 
-    List<User> selectWithRoleByExample(UserExample example);
+    List<UserVo> selectWithRoleByExample(UserExample example);
 
     User selectByPrimaryKey(String id);
 

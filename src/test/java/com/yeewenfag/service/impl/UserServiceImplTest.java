@@ -22,7 +22,7 @@ public class UserServiceImplTest {
     public void query() throws Exception {
         int pageNum = 1;
         int pageSize = new Integer(PropertyUtils.getProperty("sys.defaultPageSize"));
-        PageInfo<User> page =  userService.query(pageNum, pageNum);
+        //PageInfo<User> page =  userService.query(pageNum, pageNum);
         //Assert.assertEquals(0, page.getSize());
     }
 

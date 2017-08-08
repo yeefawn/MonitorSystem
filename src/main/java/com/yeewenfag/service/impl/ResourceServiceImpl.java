@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yeewenfag.domain.Resource;
 import com.yeewenfag.domain.ResourceExample;
+import com.yeewenfag.domain.Role;
 import com.yeewenfag.domain.vo.ResourceVo;
 import com.yeewenfag.exception.MonitorException;
 import com.yeewenfag.mapper.ResourceMapper;
@@ -14,7 +15,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -24,16 +27,27 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     @Transactional(readOnly = true, timeout = 120)
-    public PageInfo<ResourceVo> query(int pageNum, int pageSize) throws Exception {
+    public PageInfo<ResourceVo> query(ResourceVo resource, int pageNum, int pageSize) throws Exception {
         // 为扩展条件准备
         ResourceExample example = new ResourceExample();
         ResourceExample.Criteria criteria = example.createCriteria();
 
         // 设置查询条件
-        criteria.andAvailableEqualTo(1);
-        example.setOrderByClause("priority");
+        //criteria.andAvailableEqualTo(1);
+        if (resource != null) {
+            if (resource.getName() != null && !resource.getName().equals("")) {
+                criteria.andNameLike("%"+resource.getName() + "%");
+            }
+            if (resource.getPermission() != null && !resource.getPermission().equals("")) {
+                criteria.andPermissionLike("%"+resource.getPermission() + "%");
+            }
+            if (resource.getUrl() != null && !resource.getUrl().equals("")) {
+                criteria.andUrlLike("%"+resource.getUrl() + "%");
+            }
+        }
 
         example.or(criteria);
+        example.setOrderByClause("create_time desc");
         PageHelper.startPage(pageNum, pageSize);
         List<ResourceVo> list = resourceMapper.selectWithParentByExample(example);
         PageInfo<ResourceVo> page = new PageInfo<>(list);
@@ -53,9 +67,10 @@ public class ResourceServiceImpl implements ResourceService {
         if (resource.getPermission() == null) {
             throw new MonitorException(ResultEnum.REQUIRE_NULL);
         }
+
+        // 根据相关父节点设置对应的类型
         setType(resource);
-        // TODO 根据身份信息设置创建者
-        resource.setCreateUser("admin");
+
         if (resourceMapper.insertSelective(resource) <= 0){
             throw new MonitorException(ResultEnum.INSERT_FAIL);
         }
@@ -72,11 +87,10 @@ public class ResourceServiceImpl implements ResourceService {
             throw new MonitorException(ResultEnum.DATA_NULL);
         }
         resource.setId(id);
-        // TODO 根据身份信息设置创建者
-        resource.setModifyUser("admin");
-        resource.setModifyTime(new Date());
 
+        // 根据相关父节点设置对应的类型
         setType(resource);
+
         if (resourceMapper.updateByPrimaryKeySelective(resource) <= 0){
             throw new MonitorException(ResultEnum.UPDATE_FAIL);
         }
@@ -96,8 +110,9 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     @Transactional(readOnly = true, timeout = 120)
     public List<Resource> findAllByRole(String role_id) throws Exception {
+        // TODO 查找角色关联的所有资源
         if (role_id == null || role_id.equals("")) {
-
+            throw new MonitorException(ResultEnum.PRIMARYKEY_NULL);
         }
         return null;
     }
@@ -123,7 +138,17 @@ public class ResourceServiceImpl implements ResourceService {
         return resourceMapper.selectByPrimaryKey(id);
     }
 
+    @Override
+    @Transactional(readOnly = true, timeout = 120)
+    public List<ResourceVo> getMainMenuByRole(String role_id) throws Exception {
+        return resourceMapper.getMainMenuByRole(role_id);
+    }
+
     private void setType(Resource resource) throws Exception {
+        if (resource.getType().equals("1")){
+            resource.setType(resource.getType() + "0");
+            return;
+        }
         if (resource.getParentId() != null && !resource.getParentId().equals("")) {
             Resource parent = resourceMapper.selectByPrimaryKey(resource.getParentId());
             if (parent != null) {
@@ -143,4 +168,5 @@ public class ResourceServiceImpl implements ResourceService {
             resource.setType(resource.getType() + '0');
         }
     }
+
 }

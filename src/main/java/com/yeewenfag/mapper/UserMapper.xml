@@ -21,7 +21,7 @@
   </resultMap>
 
   <resultMap id="ExtendResultMap" type="com.yeewenfag.domain.vo.UserVo" extends="BaseResultMap">
-    <association property="role" column="id" javaType="com.yeewenfag.domain.Role" select="com.yeewenfag.domain.Role.selectRoleNameByUserId" fetchType="eager"/>
+    <association property="role" column="id" javaType="com.yeewenfag.domain.Role" select="com.yeewenfag.mapper.RoleMapper.selectRoleByUserId"/>
   </resultMap>
 
   <sql id="Example_Where_Clause">
@@ -402,4 +402,7 @@
     where id = #{id,jdbcType=VARCHAR}
   </update>
 
+  <select id="selectNameByPrimaryKey" parameterType="string" resultType="string" >
+    SELECT fullname FROM m_user WHERE id=#{id}
+  </select>
 </mapper>
