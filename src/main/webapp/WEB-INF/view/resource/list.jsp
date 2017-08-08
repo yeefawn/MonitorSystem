@@ -24,7 +24,7 @@
     <link rel="stylesheet" type="text/css" href="/lib/Hui-iconfont/1.0.8/iconfont.css" />
     <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
     <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />
-    <%--<link rel="stylesheet" type="text/css" href="/lib/laypage/1.3/skin/laypage.css" />--%>
+    <link rel="stylesheet" type="text/css" href="/lib/laypage/1.3/skin/laypage.css" />
     <!--[if IE 6]>
     <script type="text/javascript" src="/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
@@ -42,7 +42,7 @@
 </nav>
 <div class="page-container">
     <div class="text-c">
-        <form class="Huiform" method="post" action="/resource/query" target="_self">
+        <form class="Huiform" method="post" action="/resource/list" target="_self">
             <input type="hidden" name="pageNum" value="" id="pageNum">
             <input type="text" class="input-text" style="width:200px" placeholder="资源名称" id="name" name="name" value="${condition.name}">
             <input type="text" class="input-text" style="width:200px" placeholder="权限标识" id="permission" name="permission" value="${condition.permission}">
@@ -112,7 +112,8 @@
         </c:forEach>
         </tbody>
     </table>
-    <div id="page" class="text-c"></div>
+    <div style="width: 100%; height: 5px;"></div>
+    <div id="page" style="text-align: center"></div>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
@@ -131,9 +132,11 @@
                 curr : '${page.pageNum}',
                 pages : '${page.pages}', //总页数
                 skin : 'yahei',
-                jump : function (obj) {
-                    $('#pageNum').value(obj.curr);
-                    $('.Huiform').submit();
+                jump : function(obj, first) {
+                    if (!first) {
+                        $('#pageNum').val(obj.curr);
+                        $('.Huiform').submit();
+                    }
                 }
             }
         );

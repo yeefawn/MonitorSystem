@@ -1,7 +1,6 @@
 package com.yeewenfag.service;
 
 import com.github.pagehelper.PageInfo;
-import com.yeewenfag.domain.User;
 import com.yeewenfag.domain.vo.UserVo;
 
 /**
@@ -25,4 +24,27 @@ public interface UserService {
      * @throws Exception
      */
     void add(UserVo userVo) throws Exception;
+
+    /**
+     * 根据id获取相应记录
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    UserVo get(String id) throws Exception;
+
+    /**
+     * 更新用户
+     * @param id
+     * @param user
+     * @throws Exception
+     */
+    void update(String id, UserVo user) throws Exception;
+
+    /**
+     * 删除id对应的用户记录
+     * @param id
+     * @throws Exception
+     */
+    void delete(String id) throws Exception;
 }

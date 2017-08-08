@@ -31,41 +31,42 @@
 </head>
 <body>
 <article class="page-container">
-    <form class="form form-horizontal" id="form-admin-add" method="post" action="/user/add">
+    <form class="form form-horizontal" id="form-admin-add" method="post" action="/user/edit">
+        <input type="hidden" name="id" value="${user.id}">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="username" name="username">
+                <input type="text" class="input-text" value="${user.username}" placeholder="用户名" id="username" name="username">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>初始密码：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>密码：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="password" class="input-text" autocomplete="off" value="" placeholder="密码" id="password" name="password">
+                <input type="password" class="input-text" autocomplete="off" value="" placeholder="密码(不改可不填)" id="password" name="password">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>确认密码：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red"></span>确认密码：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <input type="password" class="input-text" autocomplete="off"  placeholder="确认新密码" id="repassword" name="repassword">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>用户名称：</label>
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>管理员名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="fullname" name="fullname">
+                <input type="text" class="input-text" value="${user.fullname}" placeholder="管理员名称" id="fullname" name="fullname">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">手机：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="" id="telephone" name="telephone">
+                <input type="text" class="input-text" value="${user.telephone}" placeholder="手机号码" id="telephone" name="telephone">
             </div>
         </div>
         <div class="row cl">
-            <label class="form-label col-xs-4 col-sm-3">邮箱：</label>
+            <label class="form-label col-xs-4 col-sm-3">电子邮箱：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" placeholder="@" name="email" id="email">
+                <input type="text" class="input-text" value="${user.email}" placeholder="电子邮箱 XXX@XXX.xx" name="email" id="email">
             </div>
         </div>
         <div class="row cl">
@@ -73,7 +74,7 @@
             <div class="formControls col-xs-8 col-sm-9"> <span class="select-box" style="width:150px;">
 			<select class="select-box" name="role.id" size="1">
 				<c:forEach items="${roles}" var="role" >
-                    <option value="${role.id}" >${role.role}</option>
+                    <option value="${role.id}" ${user.role.id == role.id ? "checked" : ""}>${role.role}</option>
                 </c:forEach>
 			</select>
 			</span> </div>
@@ -81,8 +82,21 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">备注：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <textarea name="remark" cols="" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="$.Huitextarealength(this,100)"></textarea>
+                <textarea name="remark" cols="" rows="" class="textarea"  placeholder="说点什么...100个字符以内" dragonfly="true" onKeyUp="$.Huitextarealength(this,100)">${user.remark}</textarea>
                 <p class="textarea-numberbar"><em class="textarea-length">0</em>/100</p>
+            </div>
+        </div>
+        <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>状态：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <div class="radio-box">
+                    <input name="locked" type="radio" id="locked-1" value="0" ${user.locked == 0 ? "checked" : ""}>
+                    <label for="locked-1">锁定</label>
+                </div>
+                <div class="radio-box">
+                    <input name="locked" type="radio" id="locked-2" value="1" ${user.locked == 1 ? "checked" : ""}>
+                    <label for="locked-2">不锁定</label>
+                </div>
             </div>
         </div>
         <div class="row cl">
@@ -118,11 +132,7 @@
                     minlength:4,
                     maxlength:16
                 },
-                password:{
-                    required:true
-                },
                 repassword:{
-                    required:true,
                     equalTo: "#password"
                 },
                 telephone:{

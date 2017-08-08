@@ -2,11 +2,13 @@ package com.yeewenfag.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.yeewenfag.domain.User;
 import com.yeewenfag.domain.UserExample;
 import com.yeewenfag.domain.vo.UserVo;
+import com.yeewenfag.exception.MonitorException;
 import com.yeewenfag.mapper.UserMapper;
 import com.yeewenfag.service.UserService;
+import com.yeewenfag.utils.CommonsUtils;
+import com.yeewenfag.utils.ResultEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -57,6 +59,94 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void add(UserVo userVo) throws Exception {
+        // 检查必要信息
+        checkRequire(userVo);
+        if (userVo.getPassword() == null || "".equals(userVo.getPassword())){
+            throw  new MonitorException(ResultEnum.PASSWORD_IS_NULL);
+        }
 
+        // 生成id
+        String id = CommonsUtils.createId();
+        userVo.setId(id);
+
+        // 加密密码
+        userVo.setPassword(CommonsUtils.encodePassword(userVo.getPassword(), id));
+
+        // 新增角色与用户关系记录
+        if (userMapper.insertAssociationByUserAndRole(userVo) <= 0) {
+            throw  new MonitorException(ResultEnum.INSERT_FAIL);
+        }
+
+        // 新增用户记录
+        if (userMapper.insertSelective(userVo) <= 0) {
+            throw  new MonitorException(ResultEnum.INSERT_FAIL);
+        }
+    }
+
+    @Override
+    @Transactional(readOnly = true, timeout = 120)
+    public UserVo get(String id) throws Exception {
+        return userMapper.selectByPrimaryKey(id);
+    }
+
+    @Override
+    @Transactional
+    public void update(String id, UserVo user) throws Exception {
+        if (id == null || id.equals("")) {
+            throw new MonitorException(ResultEnum.PRIMARYKEY_NULL);
+        }
+        checkRequire(user);
+
+        user.setId(id);
+
+        if (user.getPassword() != null) {
+            if (user.getPassword().equals("")) {
+                user.setPassword(null);
+            } else {
+                // 加密密码
+                user.setPassword(CommonsUtils.encodePassword(user.getPassword(), id));
+            }
+        }
+
+        // 更新角色关联关系
+        userMapper.updateAssociationByUserAndRole(user);
+
+        // 更新用户
+        if (userMapper.updateByPrimaryKeySelective(user) <= 0) {
+            throw  new MonitorException(ResultEnum.UPDATE_FAIL);
+        }
+    }
+
+    @Override
+    @Transactional
+    public void delete(String id) throws Exception {
+        if (id == null || id.equals("")) {
+            throw new MonitorException(ResultEnum.PRIMARYKEY_NULL);
+        }
+
+        // 删除用户角色关联关系
+        if (userMapper.deleteAssociationByUserAndRole(id) <= 0) {
+            throw  new MonitorException(ResultEnum.DELETE_FAIL);
+        }
+
+        // 删除用户
+        if (userMapper.deleteByPrimaryKey(id) <= 0) {
+            throw  new MonitorException(ResultEnum.DELETE_FAIL);
+        }
+    }
+
+    private void checkRequire(UserVo user) throws Exception {
+        if (user == null) {
+            throw new MonitorException(ResultEnum.DATA_NULL);
+        }
+        if (user.getUsername() == null || "".equals(user.getUsername())){
+            throw  new MonitorException(ResultEnum.USERNAME_IS_NULL);
+        }
+        if (user.getFullname() == null || "".equals(user.getFullname())){
+            throw  new MonitorException(ResultEnum.REQUIRE_NULL);
+        }
+        if (user.getRole().getId() == null || "".equals(user.getRole().getId())){
+            throw  new MonitorException(ResultEnum.ROLE_IS_NULL);
+        }
     }
 }

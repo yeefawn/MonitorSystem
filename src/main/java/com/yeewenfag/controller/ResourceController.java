@@ -119,4 +119,5 @@ public class ResourceController {
         typeMapping.put("10", "操作");
         return typeMapping;
     }
+
 }

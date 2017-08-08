@@ -119,7 +119,7 @@
     </if>
   </select>
 
-  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="BaseResultMap">
+  <select id="selectByPrimaryKey" parameterType="java.lang.String" resultMap="ExtendResultMap">
     select 
     <include refid="Base_Column_List" />
     from m_user
@@ -405,4 +405,17 @@
   <select id="selectNameByPrimaryKey" parameterType="string" resultType="string" >
     SELECT fullname FROM m_user WHERE id=#{id}
   </select>
+
+  <insert id="insertAssociationByUserAndRole" parameterType="com.yeewenfag.domain.vo.UserVo" >
+    INSERT INTO m_user_role (user_id, role_id) VALUES (#{id}, #{role.id})
+  </insert>
+
+  <update id="updateAssociationByUserAndRole" parameterType="com.yeewenfag.domain.vo.UserVo" >
+    UPDATE m_user_role SET role_id = #{role.id}
+    WHERE user_id = #{id}
+  </update>
+
+  <delete id="deleteAssociationByUserAndRole" parameterType="string">
+    DELETE FROM m_user_role WHERE user_id = #{user_id}
+  </delete>
 </mapper>

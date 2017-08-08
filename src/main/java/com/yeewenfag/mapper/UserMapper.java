@@ -22,7 +22,7 @@ public interface UserMapper {
 
     List<UserVo> selectWithRoleByExample(UserExample example);
 
-    User selectByPrimaryKey(String id);
+    UserVo selectByPrimaryKey(String id);
 
     int updateByExampleSelective(@Param("record") User record, @Param("example") UserExample example);
 
@@ -31,4 +31,10 @@ public interface UserMapper {
     int updateByPrimaryKeySelective(User record);
 
     int updateByPrimaryKey(User record);
+
+    int insertAssociationByUserAndRole(UserVo user);
+
+    int updateAssociationByUserAndRole(UserVo user);
+
+    int deleteAssociationByUserAndRole(String user_id);
 }

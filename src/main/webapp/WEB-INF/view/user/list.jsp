@@ -24,7 +24,7 @@
     <link rel="stylesheet" type="text/css" href="/lib/Hui-iconfont/1.0.8/iconfont.css" />
     <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/skin/default/skin.css" id="skin" />
     <link rel="stylesheet" type="text/css" href="/static/h-ui.admin/css/style.css" />
-    <%--<link rel="stylesheet" type="text/css" href="/lib/laypage/1.3/skin/laypage.css" />--%>
+    <link rel="stylesheet" type="text/css" href="/lib/laypage/1.3/skin/laypage.css" />
     <!--[if IE 6]>
     <script type="text/javascript" src="/lib/DD_belatedPNG_0.0.8a-min.js" ></script>
     <script>DD_belatedPNG.fix('*');</script>
@@ -71,10 +71,10 @@
         <tr class="text-c">
             <th width="25"><input type="checkbox" name="" value=""></th>
             <th width="40">ID</th>
-            <th width="100">登录名</th>
+            <th width="100">用户名</th>
             <th width="100">管理员名称</th>
             <th width="80">手机</th>
-            <th width="140">邮箱</th>
+            <th width="140">电子邮箱</th>
             <th width="80">角色</th>
             <th width="60">登陆次数</th>
             <th width="120">上一次登录IP</th>
@@ -109,7 +109,8 @@
         </c:forEach>
         </tbody>
     </table>
-    <div id="page" class="text-c"></div>
+    <div style="width: 100%; height: 5px;"></div>
+    <div id="page" style="text-align: center"></div>
 </div>
 <!--_footer 作为公共模版分离出去-->
 <script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
@@ -128,9 +129,11 @@
                 curr : '${page.pageNum}',
                 pages : '${page.pages}', //总页数
                 skin : 'yahei',
-                jump : function (obj) {
-                    $('#pageNum').value(obj.curr);
-                    $('.Huiform').submit();
+                jump : function(obj, first) {
+                    if (!first) {
+                        $('#pageNum').val(obj.curr);
+                        $('.Huiform').submit();
+                    }
                 }
             }
         );

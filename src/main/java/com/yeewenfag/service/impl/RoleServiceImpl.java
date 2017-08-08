@@ -89,6 +89,9 @@ public class RoleServiceImpl implements RoleService {
         if (roleVo == null) {
             throw new MonitorException(ResultEnum.DATA_NULL);
         }
+        if (roleVo.getRole() == null || roleVo.getRole().equals("")) {
+            throw new MonitorException(ResultEnum.NAME_NOT_NULL);
+        }
         roleVo.setId(id);
         // 删除角色与资源的关联关系
         roleMapper.dropRoleAndResourceAssociation(id);

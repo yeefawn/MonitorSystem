@@ -4,7 +4,6 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yeewenfag.domain.Resource;
 import com.yeewenfag.domain.ResourceExample;
-import com.yeewenfag.domain.Role;
 import com.yeewenfag.domain.vo.ResourceVo;
 import com.yeewenfag.exception.MonitorException;
 import com.yeewenfag.mapper.ResourceMapper;
@@ -14,10 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 @Service
 public class ResourceServiceImpl implements ResourceService {
@@ -57,16 +53,8 @@ public class ResourceServiceImpl implements ResourceService {
     @Override
     @Transactional
     public void add(Resource resource) throws Exception {
-        if (resource == null) {
-            throw new MonitorException(ResultEnum.DATA_NULL);
-        }
-        if (resource.getName() == null || resource.getName().equals("")){
-            throw new MonitorException(ResultEnum.REQUIRE_NULL);
-        }
-        // TODO 增加权限标识格式校验
-        if (resource.getPermission() == null) {
-            throw new MonitorException(ResultEnum.REQUIRE_NULL);
-        }
+        // 检查必要信息
+        checkRequire(resource);
 
         // 根据相关父节点设置对应的类型
         setType(resource);
@@ -83,9 +71,9 @@ public class ResourceServiceImpl implements ResourceService {
         if (id == null) {
             throw new MonitorException(ResultEnum.PRIMARYKEY_NULL);
         }
-        if (resource == null) {
-            throw new MonitorException(ResultEnum.DATA_NULL);
-        }
+        // 检查必要信息
+        checkRequire(resource);
+
         resource.setId(id);
 
         // 根据相关父节点设置对应的类型
@@ -166,6 +154,19 @@ public class ResourceServiceImpl implements ResourceService {
             }
         } else {
             resource.setType(resource.getType() + '0');
+        }
+    }
+
+    private void checkRequire(Resource resource) throws Exception {
+        if (resource == null) {
+            throw new MonitorException(ResultEnum.DATA_NULL);
+        }
+        if (resource.getName() == null || resource.getName().equals("")){
+            throw new MonitorException(ResultEnum.REQUIRE_NULL);
+        }
+        // TODO 增加权限标识格式校验
+        if (resource.getPermission() == null) {
+            throw new MonitorException(ResultEnum.REQUIRE_NULL);
         }
     }
 

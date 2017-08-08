@@ -13,6 +13,9 @@ public enum ResultEnum {
     UPDATE_FAIL(107, "数据更新失败"),
     DELETE_FAIL(108, "数据删除失败"),
     NAME_NOT_NULL(109, "名称不能为空"),
+    USERNAME_IS_NULL(110, "用户名不能为空！"),
+    PASSWORD_IS_NULL(111, "密码不能为空！"),
+    ROLE_IS_NULL(112, "角色为空，请先创建角色！"),
     ;
 
     private Integer code;
