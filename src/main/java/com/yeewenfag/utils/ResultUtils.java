@@ -10,4 +10,27 @@ public class ResultUtils {
         result.setMessage(message);
         return result;
     }
+
+    public static <T> Result success(Integer code, String message, T date) {
+        Result result = new Result();
+        result.setCode(code);
+        result.setMessage(message);
+        result.setDate(date);
+        return result;
+    }
+
+    public static Result error(ResultEnum message){
+        Result result = new Result();
+        result.setCode(message.getCode());
+        result.setMessage(message.getMessage());
+        return result;
+    }
+
+    public static <T> Result success(ResultEnum message, T date) {
+        Result result = new Result();
+        result.setCode(message.getCode());
+        result.setMessage(message.getMessage());
+        result.setDate(date);
+        return result;
+    }
 }

@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -33,18 +34,19 @@
 <body>
 <article class="page-container">
     <form class="form form-horizontal" id="form-resource-add" method="post">
+        <input type="hidden" name="id" value="${resource.id}">
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>资源名称：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="资源名称" id="name" name="name">
+                <input type="text" class="input-text" value="${resource.name}" placeholder="资源名称" id="name" name="name">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>资源类型：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <select class="select-box" name="type" size="1">
-                    <option value="0" selected>菜单</option>
-                    <option value="1">操作</option>
+                    <option value="0" ${fn:substring(resource.type, 0, 1) == "0" ? "selected" : ""}>菜单</option>
+                    <option value="1" ${fn:substring(resource.type, 0, 1) == "1" ? "selected" : ""}>操作</option>
                 </select>
             </div>
         </div>
@@ -52,9 +54,9 @@
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>上级资源：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <select class="select-box" name="parentId" size="1">
-                    <option value="" selected></option>
+                    <option value=""></option>
                     <c:forEach var="menu" items="${menus}">
-                        <option value="${menu.id}">${menu.name}</option>
+                        <option value="${menu.id}" ${menu.id == resource.parentId ? "selected" : ""}>${menu.name}</option>
                     </c:forEach>
                 </select>
             </div>
@@ -62,19 +64,19 @@
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>请求地址：</label>
             <div class="formControls col-xs-8 col-sm-9 skin-minimal">
-                <input type="text" class="input-text" value="" placeholder="请求地址" id="url" name="url">
+                <input type="text" class="input-text" value="${resource.url}" placeholder="请求地址" id="url" name="url">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">*</span>权限标识：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" value="" placeholder="权限标识(示例:'xxx:xxx')" id="permission" name="permission">
+                <input type="text" class="input-text" value="${resource.permission}" placeholder="权限标识(示例:'xxx:xxx')" id="permission" name="permission">
             </div>
         </div>
         <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>排序序号：</label>
             <div class="formControls col-xs-8 col-sm-9">
-                <input type="text" class="input-text" placeholder="排序序号" name="priority" id="priority">
+                <input type="text" class="input-text" value="${resource.priority}" placeholder="排序序号" name="priority" id="priority">
             </div>
         </div>
         <div class="row cl">
@@ -126,7 +128,7 @@
             submitHandler:function(form){
                 $(form).ajaxSubmit({
                     type: 'post',
-                    url: "${pageContext.request.contextPath}/resource/add" ,
+                    url: "${pageContext.request.contextPath}/resource/edit" ,
                     success: function(data){
                         layer.msg('添加成功!',{icon:1,time:1000},function(){
                             closeWindow();

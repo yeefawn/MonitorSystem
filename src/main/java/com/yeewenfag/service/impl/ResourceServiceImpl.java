@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -43,41 +44,19 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     public void add(Resource resource) throws Exception {
         if (resource == null) {
-            // TODO 抛出自定义错误
-            throw new MonitorException(ResultEnum.ADD_DATA_NULL);
+            throw new MonitorException(ResultEnum.DATA_NULL);
         }
-        if (resource.getName() != null && !resource.getName().equals("")){
-            // TODO 抛出自定义错误
+        if (resource.getName() == null || resource.getName().equals("")){
             throw new MonitorException(ResultEnum.REQUIRE_NULL);
         }
         // TODO 增加权限标识格式校验
-        if (resource.getPermission() != null) {
-            // TODO 抛出自定义错误
+        if (resource.getPermission() == null) {
             throw new MonitorException(ResultEnum.REQUIRE_NULL);
         }
-        if (resource.getParentId() != null && !resource.getParentId().equals("")) {
-            Resource parent = resourceMapper.selectByPrimaryKey(resource.getParentId());
-            if (parent != null) {
-                String parentIds = parent.getParentIds();
-                if (parentIds == null || parentIds.equals("")){
-                    resource.setType(resource.getType() + '1');
-                    resource.setParentIds(parent.getId().toString());
-                } else {
-                    int parentNum = parentIds.split("/").length;
-                    resource.setType(resource.getType() + (parentNum + 1));
-                    resource.setParentIds(parentIds + "/" + parent.getId().toString());
-                }
-            } else {
-                // TODO 抛出自定义错误
-                throw new MonitorException(ResultEnum.DATA_NOT_FOUND);
-            }
-        } else {
-          resource.setType(resource.getType() + '0');
-        }
+        setType(resource);
         // TODO 根据身份信息设置创建者
         resource.setCreateUser("admin");
         if (resourceMapper.insertSelective(resource) <= 0){
-            // TODO 抛出自定义错误
             throw new MonitorException(ResultEnum.INSERT_FAIL);
         }
 
@@ -87,14 +66,19 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     public void update(Long id, ResourceVo resource) throws Exception {
         if (id == null) {
-
+            throw new MonitorException(ResultEnum.PRIMARYKEY_NULL);
         }
         if (resource == null) {
-
+            throw new MonitorException(ResultEnum.DATA_NULL);
         }
         resource.setId(id);
-        if (resourceMapper.updateByPrimaryKeySelective(resource) <= 0){
+        // TODO 根据身份信息设置创建者
+        resource.setModifyUser("admin");
+        resource.setModifyTime(new Date());
 
+        setType(resource);
+        if (resourceMapper.updateByPrimaryKeySelective(resource) <= 0){
+            throw new MonitorException(ResultEnum.UPDATE_FAIL);
         }
     }
 
@@ -102,10 +86,10 @@ public class ResourceServiceImpl implements ResourceService {
     @Transactional
     public void delete(Long id) throws Exception {
         if (id == null) {
-
+            throw new MonitorException(ResultEnum.PRIMARYKEY_NULL);
         }
         if (resourceMapper.deleteByPrimaryKey(id) <= 0){
-
+            throw new MonitorException(ResultEnum.DELETE_FAIL);
         }
     }
 
@@ -130,5 +114,33 @@ public class ResourceServiceImpl implements ResourceService {
         example.setOrderByClause("priority");
 
         return resourceMapper.selectByExample(example);
+    }
+
+    @Override
+    @Transactional(readOnly = true, timeout = 120)
+    public Resource get(Long id) throws Exception {
+
+        return resourceMapper.selectByPrimaryKey(id);
+    }
+
+    private void setType(Resource resource) throws Exception {
+        if (resource.getParentId() != null && !resource.getParentId().equals("")) {
+            Resource parent = resourceMapper.selectByPrimaryKey(resource.getParentId());
+            if (parent != null) {
+                String parentIds = parent.getParentIds();
+                if (parentIds == null || parentIds.equals("")){
+                    resource.setType(resource.getType() + '1');
+                    resource.setParentIds(parent.getId().toString());
+                } else {
+                    int parentNum = parentIds.split("/").length;
+                    resource.setType(resource.getType() + (parentNum + 1));
+                    resource.setParentIds(parentIds + "/" + parent.getId().toString());
+                }
+            } else {
+                throw new MonitorException(ResultEnum.DATA_NOT_FOUND);
+            }
+        } else {
+            resource.setType(resource.getType() + '0');
+        }
     }
 }
