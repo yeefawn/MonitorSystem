@@ -32,6 +32,7 @@
 <div class="header"></div>
 <div class="loginWraper">
     <div id="loginform" class="loginBox">
+        <div style="color: #cc0000;width: 100%; text-align: center;">${result.message}</div>
         <form class="form form-horizontal" action="/login" method="post">
             <div class="row cl">
                 <label class="form-label col-xs-3"><i class="Hui-iconfont">&#xe60d;</i></label>
@@ -45,18 +46,18 @@
                     <input name="password" type="password" placeholder="密码" class="input-text size-L">
                 </div>
             </div>
-            <%--<div class="row cl">
-                <div class="formControls col-xs-8 col-xs-offset-3">
-                    <input class="input-text size-L" type="text" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
-                    <img src=""> <a id="kanbuq" href="javascript:;">看不清，换一张</a> </div>
-            </div>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
-                    <label for="online">
-                        <input type="checkbox" name="online" id="online" value="">
-                        使我保持登录状态</label>
-                </div>
-            </div>--%>
+                    <input class="input-text size-L" type="text" name="validateCode" placeholder="验证码" onblur="if(this.value==''){this.value='验证码:'}" onclick="if(this.value=='验证码:'){this.value='';}" value="验证码:" style="width:150px;">
+                    <img id="validateCode" src="/validateCode.jsp"> <a id="kanbuq" href="javascript:">看不清，换一张</a> </div>
+            </div>
+            <%--<div class="row cl">--%>
+                <%--<div class="formControls col-xs-8 col-xs-offset-3">--%>
+                    <%--<label for="online">--%>
+                        <%--<input type="checkbox" name="online" id="online" value="">--%>
+                        <%--使我保持登录状态</label>--%>
+                <%--</div>--%>
+            <%--</div>--%>
             <div class="row cl">
                 <div class="formControls col-xs-8 col-xs-offset-3">
                     <input name="" type="submit" class="btn btn-success radius size-L" value="&nbsp;登&nbsp;&nbsp;&nbsp;&nbsp;录&nbsp;">
@@ -69,5 +70,10 @@
 <div class="footer">Copyright 佛山市政通科技有限公司 by 政通监控系统 v0.1</div>
 <script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="/static/h-ui/js/H-ui.min.js"></script>
+<script type="text/javascript" >
+    $('#kanbuq').click(function(){
+        $('#validateCode').attr("src", "/validateCode.jsp?timestamp="+new Date().getTime());
+    })
+</script>
 </body>
 </html>

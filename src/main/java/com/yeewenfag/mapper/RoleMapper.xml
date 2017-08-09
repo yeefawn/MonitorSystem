@@ -19,7 +19,7 @@
   </resultMap>
 
   <resultMap id="ResouceResultMap" type="com.yeewenfag.domain.vo.RoleVo" extends="BaseResultMap">
-    <collection property="resources" column="id" javaType="ArrayList" ofType="com.yeewenfag.domain.vo.ResourceVo" select="com.yeewenfag.mapper.ResourceMapper.getMainMenuByRoleTemp" />
+    <collection property="resources" column="id" javaType="ArrayList" ofType="com.yeewenfag.domain.vo.ResourceVo" select="com.yeewenfag.mapper.ResourceMapper.getMainMenuByRole" />
     <collection property="resourceIds" column="id" javaType="ArrayList" ofType="string" select="selectAssociationResourceIdByRole" />
   </resultMap>
 

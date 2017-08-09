@@ -15,7 +15,7 @@ public class CommonsUtils {
 
     // 加密
     public static String encodePassword(String password, String salt) {
-        int hashIterations = new Integer(PropertyUtils.getProperty("sys.defaultHashIterations"));
+        int hashIterations = new Integer(PropertyUtils.getProperty("shiro.defaultHashIterations"));
         return new Md5Hash(password, salt, hashIterations).toString();
     }
 }

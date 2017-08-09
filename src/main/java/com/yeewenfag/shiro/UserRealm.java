@@ -1,7 +1,5 @@
-package com.yeewenfag.realm;
+package com.yeewenfag.shiro;
 
-import com.mchange.lang.ByteUtils;
-import com.yeewenfag.domain.User;
 import com.yeewenfag.domain.vo.UserVo;
 import com.yeewenfag.service.ResourceService;
 import com.yeewenfag.service.UserService;

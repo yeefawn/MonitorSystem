@@ -1,6 +1,7 @@
 package com.yeewenfag.service;
 
 import com.github.pagehelper.PageInfo;
+import com.yeewenfag.domain.User;
 import com.yeewenfag.domain.vo.UserVo;
 
 /**
@@ -55,4 +56,12 @@ public interface UserService {
      * @throws Exception
      */
     UserVo selectByUsername(String username) throws Exception;
+
+    /**
+     * 更新统计信息
+     * @param id
+     * @param user
+     * @throws Exception
+     */
+    void updateStatisticsMessage(String id, User user) throws Exception;
 }

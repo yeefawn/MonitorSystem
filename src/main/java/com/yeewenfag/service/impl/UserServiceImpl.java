@@ -2,6 +2,7 @@ package com.yeewenfag.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.yeewenfag.domain.User;
 import com.yeewenfag.domain.UserExample;
 import com.yeewenfag.domain.vo.UserVo;
 import com.yeewenfag.exception.MonitorException;
@@ -139,6 +140,24 @@ public class UserServiceImpl implements UserService {
     @Transactional(readOnly = true, timeout = 120)
     public UserVo selectByUsername(String username) throws Exception {
         return userMapper.selectUserByUsername(username);
+    }
+
+    @Override
+    @Transactional
+    public void updateStatisticsMessage(String id, User user) throws Exception {
+        if (id == null || id.equals("")) {
+            throw new MonitorException(ResultEnum.PRIMARYKEY_NULL);
+        }
+        if (user == null) {
+            throw new MonitorException(ResultEnum.DATA_NULL);
+        }
+
+        user.setId(id);
+
+        // 更新用户
+        if (userMapper.updateByPrimaryKeySelective(user) <= 0) {
+            throw  new MonitorException(ResultEnum.UPDATE_FAIL);
+        }
     }
 
     private void checkRequire(UserVo user) throws Exception {

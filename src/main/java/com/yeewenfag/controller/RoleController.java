@@ -2,20 +2,20 @@ package com.yeewenfag.controller;
 
 import com.yeewenfag.domain.vo.Result;
 import com.yeewenfag.domain.vo.RoleVo;
+import com.yeewenfag.domain.vo.UserVo;
 import com.yeewenfag.service.ResourceService;
 import com.yeewenfag.service.RoleService;
 import com.yeewenfag.utils.ResultEnum;
 import com.yeewenfag.utils.ResultUtils;
 import com.yeewenfag.utils.property.PropertyUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
-import java.util.List;
 
 @Controller
 @RequestMapping("/role")
@@ -53,8 +53,8 @@ public class RoleController {
 
     @RequestMapping(value = "/toEdit/{id}", method = RequestMethod.GET)
     public String toEdit(@PathVariable("id") String id, Model model) throws Exception {
-        // TODO 获取登录用户角色ID
-        model.addAttribute("resources", resourceService.getMainMenuByRole(null));
+        UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("resources", resourceService.getMainMenuByRole(current.getRole().getId()));
         model.addAttribute("role", roleService.get(id));
 
         return "/role/edit";
@@ -64,8 +64,8 @@ public class RoleController {
     @ResponseBody
     public Result edit(String id, RoleVo roleVo, String[] resource_ids) throws Exception {
 
-        // TODO 获取登录用户id
-        roleVo.setModifyUser("admin");
+        UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
+        roleVo.setModifyUser(current.getId());
         roleVo.setModifyTime(new Date());
 
         if (resource_ids != null && resource_ids.length > 0) {
@@ -79,9 +79,9 @@ public class RoleController {
 
     @RequestMapping(value = "/toAdd", method = RequestMethod.GET)
     public String toAdd(Model model) throws Exception {
-        // TODO 获取登录用户角色ID
+        UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
 
-        model.addAttribute("resources", resourceService.getMainMenuByRole(null));
+        model.addAttribute("resources", resourceService.getMainMenuByRole(current.getRole().getId()));
 
         return "/role/add";
     }
@@ -90,8 +90,8 @@ public class RoleController {
     @ResponseBody
     public Result add(RoleVo roleVo, String[] resource_ids) throws Exception {
 
-        // TODO 获取登录用户id
-        roleVo.setCreateUser("admin");
+        UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
+        roleVo.setCreateUser(current.getId());
 
         if (resource_ids != null && resource_ids.length > 0) {
             roleVo.setResourceIds(Arrays.asList(resource_ids));

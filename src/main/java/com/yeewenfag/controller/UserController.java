@@ -7,6 +7,7 @@ import com.yeewenfag.service.UserService;
 import com.yeewenfag.utils.ResultEnum;
 import com.yeewenfag.utils.ResultUtils;
 import com.yeewenfag.utils.property.PropertyUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -65,8 +66,8 @@ public class UserController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Result add(UserVo userVo) throws Exception {
-        // TODO 获取当前登录用户ID
-        userVo.setCreateUser("admin");
+        UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
+        userVo.setCreateUser(current.getId());
 
         userService.add(userVo);
 
@@ -85,8 +86,8 @@ public class UserController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Result edit(String id, UserVo userVo) throws Exception {
-        // TODO 获取当前登录用户ID
-        userVo.setModifyUser("admin");
+        UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
+        userVo.setModifyUser(current.getId());
         userVo.setModifyTime(new Date());
 
         userService.update(id, userVo);

@@ -16,6 +16,9 @@ public enum ResultEnum {
     USERNAME_IS_NULL(110, "用户名不能为空！"),
     PASSWORD_IS_NULL(111, "密码不能为空！"),
     ROLE_IS_NULL(112, "角色为空，请先创建角色！"),
+    ACCOUNT_NOT_FOUND(113, "用户不存在"),
+    MESSAGE_INCORRECT(114, "用户名或密码不正确"),
+    VALIDATE_INCORRECT(115, "验证码不正确"),
     ;
 
     private Integer code;

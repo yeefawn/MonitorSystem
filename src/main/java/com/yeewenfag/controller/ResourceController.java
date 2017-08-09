@@ -3,10 +3,12 @@ package com.yeewenfag.controller;
 import com.yeewenfag.domain.Resource;
 import com.yeewenfag.domain.vo.ResourceVo;
 import com.yeewenfag.domain.vo.Result;
+import com.yeewenfag.domain.vo.UserVo;
 import com.yeewenfag.service.ResourceService;
 import com.yeewenfag.utils.ResultEnum;
 import com.yeewenfag.utils.ResultUtils;
 import com.yeewenfag.utils.property.PropertyUtils;
+import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -63,8 +65,8 @@ public class ResourceController {
     @ResponseBody
     public Result add(Resource resource) throws Exception {
 
-        // TODO 根据身份信息设置创建者
-        resource.setCreateUser("admin");
+        UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
+        resource.setCreateUser(current.getId());
 
         resourceService.add(resource);
 
@@ -85,9 +87,8 @@ public class ResourceController {
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Result edit(Long id, ResourceVo resource) throws Exception {
-
-        // TODO 根据身份信息设置创建者
-        resource.setModifyUser("admin");
+        UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
+        resource.setModifyUser(current.getId());
         resource.setModifyTime(new Date());
 
         resourceService.update(id, resource);

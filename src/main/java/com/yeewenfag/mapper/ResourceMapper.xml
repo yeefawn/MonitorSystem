@@ -408,24 +408,11 @@
     <where>
       and type = '00'
       and available = 1
-      <if test="role_id != null" >
       and id IN (SELECT resource_id FROM m_role_resource WHERE role_id = #{role_id})
-      </if>
     </where>
     order by priority
   </select>
 
-  <select id="getMainMenuByRoleTemp" parameterType="string" resultMap="ExtendResultMap" >
-    SELECT
-    <include refid="Base_Column_List"/>
-    FROM m_resource
-    <where>
-      and type = '00'
-      and available = 1
-      and id IN (SELECT resource_id FROM m_role_resource WHERE role_id = #{role_id})
-    </where>
-    order by priority
-  </select>
 
   <select id="selectPermissionByRole" parameterType="string" resultType="string" >
     SELECT permission FROM m_resource WHERE id IN (SELECT resource_id FROM m_role_resource WHERE role_id = #{role_id})
