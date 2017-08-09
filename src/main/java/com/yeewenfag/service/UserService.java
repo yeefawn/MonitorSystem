@@ -47,4 +47,12 @@ public interface UserService {
      * @throws Exception
      */
     void delete(String id) throws Exception;
+
+    /**
+     * 根据用户名获取相应的记录
+     * @param username
+     * @return
+     * @throws Exception
+     */
+    UserVo selectByUsername(String username) throws Exception;
 }

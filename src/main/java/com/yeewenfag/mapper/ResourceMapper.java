@@ -35,4 +35,6 @@ public interface ResourceMapper {
     int updateByPrimaryKey(Resource record);
 
     List<ResourceVo> getMainMenuByRole(String role_id);
+
+    List<String> selectPermissionByRole(String role_id);
 }

@@ -135,6 +135,12 @@ public class UserServiceImpl implements UserService {
         }
     }
 
+    @Override
+    @Transactional(readOnly = true, timeout = 120)
+    public UserVo selectByUsername(String username) throws Exception {
+        return userMapper.selectUserByUsername(username);
+    }
+
     private void checkRequire(UserVo user) throws Exception {
         if (user == null) {
             throw new MonitorException(ResultEnum.DATA_NULL);

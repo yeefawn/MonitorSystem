@@ -37,4 +37,6 @@ public interface UserMapper {
     int updateAssociationByUserAndRole(UserVo user);
 
     int deleteAssociationByUserAndRole(String user_id);
+
+    UserVo selectUserByUsername(String username);
 }

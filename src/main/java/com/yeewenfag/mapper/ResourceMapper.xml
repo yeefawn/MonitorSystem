@@ -427,4 +427,8 @@
     order by priority
   </select>
 
+  <select id="selectPermissionByRole" parameterType="string" resultType="string" >
+    SELECT permission FROM m_resource WHERE id IN (SELECT resource_id FROM m_role_resource WHERE role_id = #{role_id})
+  </select>
+
 </mapper>

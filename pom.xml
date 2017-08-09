@@ -55,7 +55,7 @@
     <httpclient.version>4.3.3</httpclient.version>
     <jackson-databind.version>2.4.2</jackson-databind.version>
     <fastjson.version>1.2.21</fastjson.version>
-    <ehcache.version>3.2.2</ehcache.version>
+    <ehcache.version>2.10.4</ehcache.version>
     <!--架包版本变量 end-->
 
     <!--插件版本变量 start-->
@@ -393,11 +393,16 @@
       <artifactId>shiro-ehcache</artifactId>
       <version>${shiro.version}</version>
     </dependency>
+    <dependency>
+      <groupId>org.apache.shiro</groupId>
+      <artifactId>shiro-quartz</artifactId>
+      <version>${shiro.version}</version>
+    </dependency>
     <!-- shiro相关依赖包 end -->
 
     <!--ehcache依赖包-->
     <dependency>
-      <groupId>org.ehcache</groupId>
+      <groupId>net.sf.ehcache</groupId>
       <artifactId>ehcache</artifactId>
       <version>${ehcache.version}</version>
     </dependency>

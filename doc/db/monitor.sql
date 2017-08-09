@@ -162,5 +162,4 @@ CREATE TABLE `m_user_role` (
 -- ----------------------------
 -- Records of m_user_role
 -- ----------------------------
-INSERT INTO `m_user_role` VALUES ('1', 'c8bbc8b0-afcf-451b-969a-4083ddd', 'b1c1b282-fea3-4606-85d3-3365e9e');
 INSERT INTO `m_user_role` VALUES ('3', '53c052b6-eb52-47ba-9cb2-76486a0', 'b1c1b282-fea3-4606-85d3-3365e9e');

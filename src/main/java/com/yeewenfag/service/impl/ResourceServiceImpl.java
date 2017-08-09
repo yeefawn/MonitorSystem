@@ -132,6 +132,12 @@ public class ResourceServiceImpl implements ResourceService {
         return resourceMapper.getMainMenuByRole(role_id);
     }
 
+    @Override
+    @Transactional(readOnly = true, timeout = 120)
+    public List<String> selectPermissionByRole(String role_id) throws Exception {
+        return resourceMapper.selectPermissionByRole(role_id);
+    }
+
     private void setType(Resource resource) throws Exception {
         if (resource.getType().equals("1")){
             resource.setType(resource.getType() + "0");
@@ -156,6 +162,8 @@ public class ResourceServiceImpl implements ResourceService {
             resource.setType(resource.getType() + '0');
         }
     }
+
+
 
     private void checkRequire(Resource resource) throws Exception {
         if (resource == null) {

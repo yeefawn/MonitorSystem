@@ -418,4 +418,8 @@
   <delete id="deleteAssociationByUserAndRole" parameterType="string">
     DELETE FROM m_user_role WHERE user_id = #{user_id}
   </delete>
+
+  <select id="selectUserByUsername" parameterType="string" resultMap="ExtendResultMap">
+    SELECT <include refid="Base_Column_List" /> FROM m_user WHERE username = #{username}
+  </select>
 </mapper>
