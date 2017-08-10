@@ -28,7 +28,6 @@
     <title>政通监控系统 v0.1</title>
 </head>
 <body>
-<input type="hidden" id="TenantId" name="TenantId" value="" />
 <div class="header"></div>
 <div class="loginWraper">
     <div id="loginform" class="loginBox">

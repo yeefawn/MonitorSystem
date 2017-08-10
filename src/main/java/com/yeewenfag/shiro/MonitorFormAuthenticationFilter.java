@@ -47,7 +47,7 @@ public class MonitorFormAuthenticationFilter extends FormAuthenticationFilter {
 
         boolean result = super.onAccessDenied(request, response);
 
-        if (!result) {
+        if (randomcode != null && !result) {
             String IP = getRequestRealIp((HttpServletRequest) request);
             UserVo user = (UserVo) SecurityUtils.getSubject().getPrincipal();
             User statisticsMessage = new User();

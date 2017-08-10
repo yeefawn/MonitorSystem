@@ -23,6 +23,7 @@
     <bean id="propertyConfigurer" class="com.yeewenfag.utils.property.PropertyPlaceholder" >
         <property name="locations">
             <list>
+                <value>classpath*:db.properties</value>
                 <value>classpath*:config.properties</value>
             </list>
         </property>

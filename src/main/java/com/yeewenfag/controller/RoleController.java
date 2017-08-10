@@ -9,6 +9,7 @@ import com.yeewenfag.utils.ResultEnum;
 import com.yeewenfag.utils.ResultUtils;
 import com.yeewenfag.utils.property.PropertyUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,6 +28,7 @@ public class RoleController {
     @Autowired
     private ResourceService resourceService;
 
+    @RequiresPermissions("role:list")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model) throws Exception {
 
@@ -38,6 +40,7 @@ public class RoleController {
         return "/role/list";
     }
 
+    @RequiresPermissions("role:list")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public String list(@ModelAttribute("role") String role, Integer pageNum, Model model) throws Exception {
 
@@ -51,6 +54,7 @@ public class RoleController {
         return "/role/list";
     }
 
+    @RequiresPermissions("role:edit")
     @RequestMapping(value = "/toEdit/{id}", method = RequestMethod.GET)
     public String toEdit(@PathVariable("id") String id, Model model) throws Exception {
         UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
@@ -60,6 +64,7 @@ public class RoleController {
         return "/role/edit";
     }
 
+    @RequiresPermissions("role:edit")
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Result edit(String id, RoleVo roleVo, String[] resource_ids) throws Exception {
@@ -77,6 +82,7 @@ public class RoleController {
         return ResultUtils.success(ResultEnum.PROCESS_SUCCESS, null);
     }
 
+    @RequiresPermissions("role:add")
     @RequestMapping(value = "/toAdd", method = RequestMethod.GET)
     public String toAdd(Model model) throws Exception {
         UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
@@ -86,6 +92,7 @@ public class RoleController {
         return "/role/add";
     }
 
+    @RequiresPermissions("role:add")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Result add(RoleVo roleVo, String[] resource_ids) throws Exception {
@@ -102,7 +109,7 @@ public class RoleController {
         return ResultUtils.success(ResultEnum.PROCESS_SUCCESS, null);
     }
 
-
+    @RequiresPermissions("role:delete")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Result delete(@PathVariable("id") String id) throws Exception {

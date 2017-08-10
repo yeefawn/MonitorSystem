@@ -6,6 +6,7 @@ import com.yeewenfag.exception.MonitorException;
 import com.yeewenfag.utils.ResultUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.apache.shiro.authz.UnauthorizedException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -25,5 +26,10 @@ public class MonitorExceptionHandler{
             logger.error(e);
             return ResultUtils.error(100, "未知错误");
         }
+    }
+
+    @ExceptionHandler(value = UnauthorizedException.class)
+    public String shiroHandler(UnauthorizedException e) {
+        return "redirect:/unauthorized.jsp";
     }
 }

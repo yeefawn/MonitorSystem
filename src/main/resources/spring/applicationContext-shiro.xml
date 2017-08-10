@@ -2,17 +2,14 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xmlns:util="http://www.springframework.org/schema/util"
-       xmlns:aop="http://www.springframework.org/schema/aop"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd
        http://www.springframework.org/schema/util
-       http://www.springframework.org/schema/util/spring-util.xsd
-       http://www.springframework.org/schema/aop
-       http://www.springframework.org/schema/aop/spring-aop.xsd">
+       http://www.springframework.org/schema/util/spring-util.xsd">
 
     <!-- 缓存管理器 使用Ehcache实现 -->
     <bean id="cacheManager" class="org.apache.shiro.cache.ehcache.EhCacheManager">
-        <property name="cacheManagerConfigFile" value="classpath:ehcache.xml"/>
+        <property name="cacheManagerConfigFile" value="classpath:ehcache-shiro.xml"/>
     </bean>
 
     <!-- 凭证匹配器 -->
@@ -110,8 +107,8 @@
         <property name="securityManager" ref="securityManager"/>
         <!--指定登录页面-->
         <property name="loginUrl" value="/login"/>
-        <!-- 指定无权访问转跳页面 -->
-        <property name="unauthorizedUrl" value="/unauthorized.jsp"/>
+        <!-- 指定无权访问转跳页面 注：配置统一异常处理后不起作用-->
+        <!--<property name="unauthorizedUrl" value="/unauthorized.jsp"/>-->
         <property name="filters">
             <util:map>
                 <entry key="authc" value-ref="formAuthenticationFilter"/>
@@ -127,17 +124,10 @@
                 /druid/** = anon
                 /index.jsp = anon
                 /unauthorized.jsp = anon
-                /login = authc
                 /logout = logout
-                /** = user
+                /** = authc
             </value>
         </property>
-    </bean>
-
-    <!-- 开启shiro注解扫描 -->
-    <aop:config proxy-target-class="true"></aop:config>
-    <bean class="org.apache.shiro.spring.security.interceptor.AuthorizationAttributeSourceAdvisor">
-        <property name="securityManager" ref="securityManager"/>
     </bean>
 
 </beans>

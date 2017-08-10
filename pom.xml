@@ -55,7 +55,7 @@
     <httpclient.version>4.3.3</httpclient.version>
     <jackson-databind.version>2.4.2</jackson-databind.version>
     <fastjson.version>1.2.21</fastjson.version>
-    <ehcache.version>2.10.4</ehcache.version>
+    <ehcache.version>2.4.8</ehcache.version>
     <jmail.version>1.4.5</jmail.version>
     <httpclient.version>4.5.3</httpclient.version>
     <!--架包版本变量 end-->
@@ -418,7 +418,7 @@
     <!--ehcache依赖包-->
     <dependency>
       <groupId>net.sf.ehcache</groupId>
-      <artifactId>ehcache</artifactId>
+      <artifactId>ehcache-core</artifactId>
       <version>${ehcache.version}</version>
     </dependency>
 

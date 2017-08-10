@@ -9,6 +9,7 @@ import com.yeewenfag.utils.ResultEnum;
 import com.yeewenfag.utils.ResultUtils;
 import com.yeewenfag.utils.property.PropertyUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,7 +26,7 @@ public class ResourceController {
     @Autowired
     private ResourceService resourceService;
 
-
+    @RequiresPermissions("resource:list")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model) throws Exception {
         // 设置分页参数
@@ -38,6 +39,7 @@ public class ResourceController {
         return "resource/list";
     }
 
+    @RequiresPermissions("resource:list")
     @RequestMapping(value = "/list",method = RequestMethod.POST)
     public String query(@ModelAttribute("condition") ResourceVo condition, Integer pageNum, Model model) throws Exception {
         // 设置分页参数
@@ -52,6 +54,7 @@ public class ResourceController {
         return "resource/list";
     }
 
+    @RequiresPermissions("resource:add")
     @RequestMapping(value = "/toAdd", method = RequestMethod.GET)
     public String toAdd(Model model) throws Exception {
 
@@ -61,6 +64,7 @@ public class ResourceController {
         return "resource/add";
     }
 
+    @RequiresPermissions("resource:add")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Result add(Resource resource) throws Exception {
@@ -73,6 +77,7 @@ public class ResourceController {
         return ResultUtils.success(ResultEnum.PROCESS_SUCCESS, null);
     }
 
+    @RequiresPermissions("resource:edit")
     @RequestMapping(value = "/toEdit/{id}", method = RequestMethod.GET)
     public String toEdit(@PathVariable("id") Long id, Model model) throws Exception {
 
@@ -84,6 +89,7 @@ public class ResourceController {
         return "/resource/edit";
     }
 
+    @RequiresPermissions("resource:edit")
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Result edit(Long id, ResourceVo resource) throws Exception {
@@ -96,6 +102,7 @@ public class ResourceController {
         return ResultUtils.success(ResultEnum.PROCESS_SUCCESS, null);
     }
 
+    @RequiresPermissions("resource:delete")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Result delete(@PathVariable("id") Long id) throws Exception {

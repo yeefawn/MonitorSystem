@@ -8,6 +8,7 @@ import com.yeewenfag.utils.ResultEnum;
 import com.yeewenfag.utils.ResultUtils;
 import com.yeewenfag.utils.property.PropertyUtils;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authz.annotation.RequiresPermissions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -31,6 +32,7 @@ public class UserController {
     @Autowired
     private RoleService roleService;
 
+    @RequiresPermissions("user:list")
     @RequestMapping(value = "/list", method = RequestMethod.GET)
     public String list(Model model) throws Exception{
 
@@ -42,6 +44,7 @@ public class UserController {
         return "user/list";
     }
 
+    @RequiresPermissions("user:list")
     @RequestMapping(value = "/list", method = RequestMethod.POST)
     public String query(UserVo userVo, Integer pageNum, Model model) throws Exception{
 
@@ -55,6 +58,7 @@ public class UserController {
         return "user/list";
     }
 
+    @RequiresPermissions("user:add")
     @RequestMapping(value = "/toAdd", method = RequestMethod.GET)
     public String toAdd(Model model) throws Exception {
 
@@ -63,6 +67,7 @@ public class UserController {
         return "user/add";
     }
 
+    @RequiresPermissions("user:add")
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     @ResponseBody
     public Result add(UserVo userVo) throws Exception {
@@ -74,6 +79,7 @@ public class UserController {
         return ResultUtils.success(ResultEnum.PROCESS_SUCCESS, null);
     }
 
+    @RequiresPermissions("user:edit")
     @RequestMapping(value = "/toEdit/{id}", method = RequestMethod.GET)
     public String toEdit(@PathVariable("id") String id, Model model) throws Exception {
 
@@ -83,6 +89,7 @@ public class UserController {
         return "user/edit";
     }
 
+    @RequiresPermissions("user:edit")
     @RequestMapping(value = "/edit", method = RequestMethod.POST)
     @ResponseBody
     public Result edit(String id, UserVo userVo) throws Exception {
@@ -95,6 +102,7 @@ public class UserController {
         return ResultUtils.success(ResultEnum.PROCESS_SUCCESS, null);
     }
 
+    @RequiresPermissions("user:delete")
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     @ResponseBody
     public Result delete(@PathVariable("id") String id) throws Exception {

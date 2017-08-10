@@ -7,6 +7,8 @@ import com.yeewenfag.utils.ResultUtils;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.IncorrectCredentialsException;
 import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authz.annotation.RequiresGuest;
+import org.apache.shiro.authz.annotation.RequiresUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +27,7 @@ public class SystemController {
     @Autowired
     private ResourceService resourceService;
 
+    @RequiresUser
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(Model model) throws Exception {
         UserVo user = (UserVo) SecurityUtils.getSubject().getPrincipal();
@@ -35,6 +38,7 @@ public class SystemController {
         return "system/index";
     }
 
+    @RequiresUser
     @RequestMapping(value = "/welcome", method = RequestMethod.GET)
     public String welcome(Model model) throws Exception{
         UserVo user = (UserVo) SecurityUtils.getSubject().getPrincipal();
@@ -44,6 +48,7 @@ public class SystemController {
         return "system/welcome";
     }
 
+    @RequiresGuest
     @RequestMapping(value = "/login")
     public String login(HttpServletRequest request) throws Exception {
         String shiroLoginFailure = (String) request.getAttribute("shiroLoginFailure");
