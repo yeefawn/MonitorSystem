@@ -28,6 +28,8 @@ public class SystemController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public String index(Model model) throws Exception {
         UserVo user = (UserVo) SecurityUtils.getSubject().getPrincipal();
+        model.addAttribute("roleName",user.getRole().getRole());
+        model.addAttribute("fullName",user.getFullname());
         // 根据权限获取动态菜单
         model.addAttribute("menus", resourceService.getMainMenuByRole(user.getRole().getId()));
         return "system/index";

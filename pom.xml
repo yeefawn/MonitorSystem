@@ -56,6 +56,8 @@
     <jackson-databind.version>2.4.2</jackson-databind.version>
     <fastjson.version>1.2.21</fastjson.version>
     <ehcache.version>2.10.4</ehcache.version>
+    <jmail.version>1.4.5</jmail.version>
+    <httpclient.version>4.5.3</httpclient.version>
     <!--架包版本变量 end-->
 
     <!--插件版本变量 start-->
@@ -277,6 +279,19 @@
       <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
+
+    <!--电子邮箱-->
+    <dependency>
+      <groupId>javax.mail</groupId>
+      <artifactId>mail</artifactId>
+      <version>${jmail.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.httpcomponents</groupId>
+      <artifactId>httpclient</artifactId>
+      <version>${httpclient.version}</version>
+    </dependency>
+
 
     <!-- 日志文件管理包 start -->
     <!--下面这三个是配套使用：http://blog.csdn.net/woshiwxw765/article/details/7624556-->

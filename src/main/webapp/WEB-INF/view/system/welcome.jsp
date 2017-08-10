@@ -6,6 +6,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
 <html>
 <head>
     <meta charset="utf-8">
@@ -31,8 +32,8 @@
 <body>
 <div class="page-container">
     <p class="f-20 text-success">欢迎使用H-ui.admin <span class="f-14">v3.1</span>后台模版！</p>
-    <p>登录次数：18 </p>
-    <p>上次登录IP：222.35.131.79.1  上次登录时间：2014-6-14 11:19:55</p>
+    <p>登录次数：${loginCount} </p>
+    <p>上次登录IP：${lastLoginIp}  上次登录时间：<fmt:formatDate value="${lastLoginTime}" pattern="yyyy-MM-dd HH:mm:ss"/></p>
     <table class="table table-border table-bordered table-bg">
         <thead>
         <tr>
@@ -195,10 +196,12 @@
 <footer class="footer mt-20">
     <div class="container">
         <p>感谢jQuery、layer、laypage、Validform、UEditor、My97DatePicker、iconfont、Datatables、WebUploaded、icheck、highcharts、bootstrap-Switch<br>
-            Copyright &copy;2015-2017 H-ui.admin v3.1 All Rights Reserved.<br>
+            Copyright &copy;2015-2017 政通监控系统 v0.1 All Rights Reserved.<br>
             本后台系统由<a href="http://www.h-ui.net/" target="_blank" title="H-ui前端框架">H-ui前端框架</a>提供前端技术支持</p>
     </div>
 </footer>
+</body>
 <script type="text/javascript" src="/lib/jquery/1.9.1/jquery.min.js"></script>
 <script type="text/javascript" src="/static/h-ui/js/H-ui.min.js"></script>
+
 </html>

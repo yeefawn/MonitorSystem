@@ -124,6 +124,7 @@
                 /static/** = anon
                 <!--验证码-->
                 /validateCode.jsp = anon
+                /druid/** = anon
                 /index.jsp = anon
                 /unauthorized.jsp = anon
                 /login = authc
