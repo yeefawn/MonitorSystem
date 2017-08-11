@@ -47,6 +47,19 @@
             </div>
         </div>
         <div class="row cl">
+            <label class="form-label col-xs-4 col-sm-3"><span class="c-red">&nbsp;</span>状态：</label>
+            <div class="formControls col-xs-8 col-sm-9">
+                <div class="radio-box">
+                    <input name="roleType" type="radio" id="roleType-1" value="1" checked>
+                    <label for="roleType-1">普通管理员</label>
+                </div>
+                <div class="radio-box">
+                    <input name="roleType" type="radio" id="roleType-2" value="0" >
+                    <label for="roleType-2">超级管理员</label>
+                </div>
+            </div>
+        </div>
+        <div class="row cl">
             <label class="form-label col-xs-4 col-sm-3">角色权限：</label>
             <div class="formControls col-xs-8 col-sm-9">
                 <c:forEach items="${resources}" var="main" >

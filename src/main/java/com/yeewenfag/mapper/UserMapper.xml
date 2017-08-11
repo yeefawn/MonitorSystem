@@ -422,4 +422,10 @@
   <select id="selectUserByUsername" parameterType="string" resultMap="ExtendResultMap">
     SELECT <include refid="Base_Column_List" /> FROM m_user WHERE username = #{username}
   </select>
+
+  <select id="selectContactByMonitor" parameterType="string" >
+    select
+    <include refid="Base_Column_List" />
+    from m_user WHERE id in (#{contact})
+  </select>
 </mapper>

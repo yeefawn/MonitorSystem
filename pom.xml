@@ -77,7 +77,7 @@
     <!--插件版本变量 end-->
 
     <!--其他变量 start-->
-    <war-name.version>ssm</war-name.version>
+    <war-name.version>monitor</war-name.version>
     <jdk.version>1.8</jdk.version>
 
     <tomcat-port.version>80</tomcat-port.version>

@@ -89,7 +89,7 @@ public class RoleServiceImpl implements RoleService {
         if (roleVo == null) {
             throw new MonitorException(ResultEnum.DATA_NULL);
         }
-        if (roleVo.getRole() == null || roleVo.getRole().equals("")) {
+        if (roleVo.getRole() != null && roleVo.getRole().equals("")) {
             throw new MonitorException(ResultEnum.NAME_NOT_NULL);
         }
         roleVo.setId(id);

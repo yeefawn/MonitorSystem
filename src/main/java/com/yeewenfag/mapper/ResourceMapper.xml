@@ -408,7 +408,10 @@
     <where>
       and type = '00'
       and available = 1
-      and id IN (SELECT resource_id FROM m_role_resource WHERE role_id = #{role_id})
+      <if test="value != null">
+        and id IN (SELECT resource_id FROM m_role_resource WHERE role_id = #{role_id})
+      </if>
+
     </where>
     order by priority
   </select>

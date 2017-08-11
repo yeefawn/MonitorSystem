@@ -68,11 +68,11 @@ public interface ResourceService {
 
     /**
      * 根据角色获取资源树
-     * @param role_id
+     * @param role
      * @return
      * @throws Exception
      */
-    List<ResourceVo> getMainMenuByRole(String role_id) throws Exception;
+    List<ResourceVo> getMainMenuByRole(Role role) throws Exception;
 
     /**
      * 根据角色获取资源权限标识符

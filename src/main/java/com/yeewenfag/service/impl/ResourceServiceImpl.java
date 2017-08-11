@@ -4,6 +4,7 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.yeewenfag.domain.Resource;
 import com.yeewenfag.domain.ResourceExample;
+import com.yeewenfag.domain.Role;
 import com.yeewenfag.domain.vo.ResourceVo;
 import com.yeewenfag.exception.MonitorException;
 import com.yeewenfag.mapper.ResourceMapper;
@@ -128,8 +129,11 @@ public class ResourceServiceImpl implements ResourceService {
 
     @Override
     @Transactional(readOnly = true, timeout = 120)
-    public List<ResourceVo> getMainMenuByRole(String role_id) throws Exception {
-        return resourceMapper.getMainMenuByRole(role_id);
+    public List<ResourceVo> getMainMenuByRole(Role role) throws Exception {
+        if (role.getRoleType() == 0){
+            return resourceMapper.getMainMenuByRole(null);
+        }
+        return resourceMapper.getMainMenuByRole(role.getId());
     }
 
     @Override

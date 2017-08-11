@@ -9,6 +9,8 @@ public class Role {
 
     private String description;
 
+    private Integer roleType;
+
     private String createUser;
 
     private Date createTime;
@@ -41,6 +43,14 @@ public class Role {
 
     public void setDescription(String description) {
         this.description = description == null ? null : description.trim();
+    }
+
+    public Integer getRoleType() {
+        return roleType;
+    }
+
+    public void setRoleType(Integer roleType) {
+        this.roleType = roleType;
     }
 
     public String getCreateUser() {

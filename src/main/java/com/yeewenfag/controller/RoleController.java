@@ -58,7 +58,8 @@ public class RoleController {
     @RequestMapping(value = "/toEdit/{id}", method = RequestMethod.GET)
     public String toEdit(@PathVariable("id") String id, Model model) throws Exception {
         UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
-        model.addAttribute("resources", resourceService.getMainMenuByRole(current.getRole().getId()));
+
+        model.addAttribute("resources", resourceService.getMainMenuByRole(current.getRole()));
         model.addAttribute("role", roleService.get(id));
 
         return "/role/edit";
@@ -87,7 +88,7 @@ public class RoleController {
     public String toAdd(Model model) throws Exception {
         UserVo current = (UserVo) SecurityUtils.getSubject().getPrincipal();
 
-        model.addAttribute("resources", resourceService.getMainMenuByRole(current.getRole().getId()));
+        model.addAttribute("resources", resourceService.getMainMenuByRole(current.getRole()));
 
         return "/role/add";
     }

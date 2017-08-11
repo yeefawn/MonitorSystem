@@ -61,7 +61,18 @@ public class UserServiceImpl implements UserService {
     @Transactional
     public void add(UserVo userVo) throws Exception {
         // 检查必要信息
-        checkRequire(userVo);
+        if (userVo == null) {
+            throw new MonitorException(ResultEnum.DATA_NULL);
+        }
+        if (userVo.getUsername() == null || "".equals(userVo.getUsername())){
+            throw  new MonitorException(ResultEnum.USERNAME_IS_NULL);
+        }
+        if (userVo.getFullname() == null || "".equals(userVo.getFullname())){
+            throw  new MonitorException(ResultEnum.REQUIRE_NULL);
+        }
+        if (userVo.getRole().getId() == null || "".equals(userVo.getRole().getId())){
+            throw  new MonitorException(ResultEnum.ROLE_IS_NULL);
+        }
         if (userVo.getPassword() == null || "".equals(userVo.getPassword())){
             throw  new MonitorException(ResultEnum.PASSWORD_IS_NULL);
         }
@@ -96,7 +107,18 @@ public class UserServiceImpl implements UserService {
         if (id == null || id.equals("")) {
             throw new MonitorException(ResultEnum.PRIMARYKEY_NULL);
         }
-        checkRequire(user);
+        if (user == null) {
+            throw new MonitorException(ResultEnum.DATA_NULL);
+        }
+        if (user.getUsername() != null && "".equals(user.getUsername())){
+            throw  new MonitorException(ResultEnum.USERNAME_IS_NULL);
+        }
+        if (user.getFullname() != null && "".equals(user.getFullname())){
+            throw  new MonitorException(ResultEnum.REQUIRE_NULL);
+        }
+        if (user.getRole().getId() != null && "".equals(user.getRole().getId())){
+            throw  new MonitorException(ResultEnum.ROLE_IS_NULL);
+        }
 
         user.setId(id);
 
@@ -160,18 +182,4 @@ public class UserServiceImpl implements UserService {
         }
     }
 
-    private void checkRequire(UserVo user) throws Exception {
-        if (user == null) {
-            throw new MonitorException(ResultEnum.DATA_NULL);
-        }
-        if (user.getUsername() == null || "".equals(user.getUsername())){
-            throw  new MonitorException(ResultEnum.USERNAME_IS_NULL);
-        }
-        if (user.getFullname() == null || "".equals(user.getFullname())){
-            throw  new MonitorException(ResultEnum.REQUIRE_NULL);
-        }
-        if (user.getRole().getId() == null || "".equals(user.getRole().getId())){
-            throw  new MonitorException(ResultEnum.ROLE_IS_NULL);
-        }
-    }
 }

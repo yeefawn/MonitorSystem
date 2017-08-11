@@ -33,8 +33,9 @@ public class SystemController {
         UserVo user = (UserVo) SecurityUtils.getSubject().getPrincipal();
         model.addAttribute("roleName",user.getRole().getRole());
         model.addAttribute("fullName",user.getFullname());
+
         // 根据权限获取动态菜单
-        model.addAttribute("menus", resourceService.getMainMenuByRole(user.getRole().getId()));
+        model.addAttribute("menus", resourceService.getMainMenuByRole(user.getRole()));
         return "system/index";
     }
 

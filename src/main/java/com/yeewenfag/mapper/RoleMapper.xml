@@ -6,6 +6,7 @@
     <id column="id" jdbcType="VARCHAR" property="id" />
     <result column="role" jdbcType="VARCHAR" property="role" />
     <result column="description" jdbcType="VARCHAR" property="description" />
+    <result column="role_type" jdbcType="INTEGER" property="roleType" />
     <result column="create_user" jdbcType="VARCHAR" property="createUser" />
     <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
     <result column="modify_user" jdbcType="VARCHAR" property="modifyUser" />
@@ -84,7 +85,8 @@
   </sql>
 
   <sql id="Base_Column_List">
-    id, role, description, create_user, create_time, modify_user, modify_time, available
+    id, role, description, role_type, create_user, create_time, modify_user, modify_time, 
+    available
   </sql>
 
   <select id="selectByExample" parameterType="com.yeewenfag.domain.RoleExample" resultMap="UserResultMap">
@@ -123,11 +125,13 @@
 
   <insert id="insert" parameterType="com.yeewenfag.domain.Role">
     insert into m_role (id, role, description, 
-      create_user, create_time, modify_user, 
-      modify_time, available)
+      role_type, create_user, create_time, 
+      modify_user, modify_time, available
+      )
     values (#{id,jdbcType=VARCHAR}, #{role,jdbcType=VARCHAR}, #{description,jdbcType=VARCHAR}, 
-      #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, #{modifyUser,jdbcType=VARCHAR}, 
-      #{modifyTime,jdbcType=TIMESTAMP}, #{available,jdbcType=INTEGER})
+      #{roleType,jdbcType=INTEGER}, #{createUser,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}, 
+      #{modifyUser,jdbcType=VARCHAR}, #{modifyTime,jdbcType=TIMESTAMP}, #{available,jdbcType=INTEGER}
+      )
   </insert>
 
   <insert id="insertSelective" parameterType="com.yeewenfag.domain.Role">
@@ -141,6 +145,9 @@
       </if>
       <if test="description != null">
         description,
+      </if>
+      <if test="roleType != null">
+        role_type,
       </if>
       <if test="createUser != null">
         create_user,
@@ -167,6 +174,9 @@
       </if>
       <if test="description != null">
         #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null">
+        #{roleType,jdbcType=INTEGER},
       </if>
       <if test="createUser != null">
         #{createUser,jdbcType=VARCHAR},
@@ -205,6 +215,9 @@
       <if test="record.description != null">
         description = #{record.description,jdbcType=VARCHAR},
       </if>
+      <if test="record.roleType != null">
+        role_type = #{record.roleType,jdbcType=INTEGER},
+      </if>
       <if test="record.createUser != null">
         create_user = #{record.createUser,jdbcType=VARCHAR},
       </if>
@@ -231,6 +244,7 @@
     set id = #{record.id,jdbcType=VARCHAR},
       role = #{record.role,jdbcType=VARCHAR},
       description = #{record.description,jdbcType=VARCHAR},
+      role_type = #{record.roleType,jdbcType=INTEGER},
       create_user = #{record.createUser,jdbcType=VARCHAR},
       create_time = #{record.createTime,jdbcType=TIMESTAMP},
       modify_user = #{record.modifyUser,jdbcType=VARCHAR},
@@ -249,6 +263,9 @@
       </if>
       <if test="description != null">
         description = #{description,jdbcType=VARCHAR},
+      </if>
+      <if test="roleType != null">
+        role_type = #{roleType,jdbcType=INTEGER},
       </if>
       <if test="createUser != null">
         create_user = #{createUser,jdbcType=VARCHAR},
@@ -273,6 +290,7 @@
     update m_role
     set role = #{role,jdbcType=VARCHAR},
       description = #{description,jdbcType=VARCHAR},
+      role_type = #{roleType,jdbcType=INTEGER},
       create_user = #{createUser,jdbcType=VARCHAR},
       create_time = #{createTime,jdbcType=TIMESTAMP},
       modify_user = #{modifyUser,jdbcType=VARCHAR},
@@ -283,10 +301,10 @@
 
   <select id="selectRoleByUserId" resultType="com.yeewenfag.domain.Role" parameterType="string">
     SELECT
-      <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />
     FROM m_role r WHERE r.id = (SELECT ur.role_id FROM m_user_role ur WHERE ur.user_id = #{user_id})
   </select>
-  
+
   <insert id="batchInsertRoleAndResourceAssociation" parameterType="com.yeewenfag.domain.vo.RoleVo" >
     INSERT INTO m_role_resource (role_id, resource_id)
     VALUES
@@ -308,9 +326,8 @@
 
   <select id="selectAllRole" resultType="com.yeewenfag.domain.Role" >
     SELECT
-      <include refid="Base_Column_List" />
+    <include refid="Base_Column_List" />
     FROM
-      m_role
+    m_role
   </select>
-
 </mapper>

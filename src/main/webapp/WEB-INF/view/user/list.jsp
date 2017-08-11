@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -56,9 +57,11 @@
             <a href="javascript:" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
+            <shiro:hasPermission name="user:add">
             <a href="javascript:" onclick="admin_user_add('添加用户','/user/toAdd','800')" class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加用户
             </a>
+            </shiro:hasPermission>
         </span>
         <span class="r">
             共有数据：<strong>${page.total}</strong> 条
@@ -98,12 +101,16 @@
                 <td><fmt:formatDate value="${user.lastLoginTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
                 <td><span class="label ${user.locked == 1 ? "label-success" : ""} radius">${user.locked == 1 ? "可用" : "被锁定"}</span></td>
                 <td>
+                    <shiro:hasPermission name="user:edit">
                     <a title="编辑" href="javascript:" onclick="admin_user_edit('资源编辑','/user/toEdit','${user.id}','800')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6df;</i>
                     </a>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="user:delete">
                     <a title="删除" href="javascript:" onclick="admin_user_del(this,'${user.id}')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6e2;</i>
                     </a>
+                    </shiro:hasPermission>
                 </td>
             </tr>
         </c:forEach>

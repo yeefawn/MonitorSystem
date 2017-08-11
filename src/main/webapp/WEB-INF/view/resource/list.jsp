@@ -8,6 +8,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core"  prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt"  prefix="fmt"%>
+<%@taglib prefix="shiro" uri="http://shiro.apache.org/tags" %>
 <html>
 <head>
     <meta charset="utf-8">
@@ -55,9 +56,11 @@
             <a href="javascript:" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
+            <shiro:hasPermission name="resource:add">
             <a href="javascript:" onclick="admin_permission_add('添加资源节点','/resource/toAdd','380','420')" class="btn btn-primary radius">
                 <i class="Hui-iconfont">&#xe600;</i> 添加资源节点
             </a>
+            </shiro:hasPermission>
         </span>
         <span class="r">
             共有数据：<strong>${page.total}</strong> 条
@@ -73,11 +76,11 @@
             <th width="80">资源名称</th>
             <th width="60">资源类型</th>
             <th width="80">上级资源名称</th>
-            <th width="150">请求地址</th>
+            <th width="130">请求地址</th>
             <th width="90">权限标识</th>
-            <th width="60">创建者</th>
+            <th width="70">创建者</th>
             <th width="120">创建时间</th>
-            <th width="60">修改者</th>
+            <th width="70">修改者</th>
             <th width="120">修改时间</th>
             <th width="30">排序</th>
             <th width="50">状态</th>
@@ -101,12 +104,16 @@
                 <td>${resource.priority}</td>
                 <td><span class="label ${resource.available == 1 ? "label-success" : ""} radius">${resource.available == 1 ? "可用" : "不可用"}</span></td>
                 <td>
+                    <shiro:hasPermission name="resource:edit">
                     <a title="编辑" href="javascript:" onclick="admin_permission_edit('资源编辑','/resource/toEdit','${resource.id}','380','450')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6df;</i>
                     </a>
+                    </shiro:hasPermission>
+                    <shiro:hasPermission name="resource:delete">
                     <a title="删除" href="javascript:" onclick="admin_permission_del(this,'${resource.id}')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6e2;</i>
                     </a>
+                    </shiro:hasPermission>
                 </td>
             </tr>
         </c:forEach>

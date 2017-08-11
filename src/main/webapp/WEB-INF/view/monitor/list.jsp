@@ -36,17 +36,20 @@
 <nav class="breadcrumb">
     <i class="Hui-iconfont">&#xe67f;</i> 首页
     <span class="c-gray en">&gt;</span> 系统管理
-    <span class="c-gray en">&gt;</span> 角色管理
+    <span class="c-gray en">&gt;</span> 监控管理
     <a class="btn btn-success radius r" id="refresh" style="line-height:1.6em;margin-top:3px" href="javascript:void(0);" title="刷新" onclick="refreshWindow()" >
         <i class="Hui-iconfont">&#xe68f;</i>
     </a>
 </nav>
 <div class="page-container">
     <div class="text-c">
-        <form class="Huiform" method="post" action="/role/list" target="_self">
+        <form class="Huiform" method="post" action="/monitor/list" target="_self">
             <input type="hidden" name="pageNum" value="" id="pageNum">
-            <input type="text" class="input-text" style="width:200px" placeholder="角色名称" id="role" name="role" value="${role}">
-            <button type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜角色</button>
+            <input type="text" class="input-text" style="width:150px" placeholder="登录名" id="username" name="username">
+            <input type="text" class="input-text" style="width:150px" placeholder="管理员名称" id="fullname" name="fullname">
+            <input type="text" class="input-text" style="width:150px" placeholder="邮箱地址" id="email" name="email">
+            <input type="text" class="input-text" style="width:150px" placeholder="手机号码" id="telephone" name="telephone">
+            <button type="submit" class="btn btn-success"><i class="Hui-iconfont">&#xe665;</i> 搜监控</button>
         </form>
     </div>
     <div class="cl pd-5 bg-1 bk-gray mt-20">
@@ -54,9 +57,9 @@
             <a href="javascript:" onclick="datadel()" class="btn btn-danger radius">
                 <i class="Hui-iconfont">&#xe6e2;</i> 批量删除
             </a>
-            <shiro:hasPermission name="role:add">
-            <a href="javascript:" onclick="admin_role_add('添加角色','/role/toAdd','800')" class="btn btn-primary radius">
-                <i class="Hui-iconfont">&#xe600;</i> 添加角色
+            <shiro:hasPermission name="user:add">
+            <a href="javascript:" onclick="admin_user_add('添加监控','/monitor/toAdd','800')" class="btn btn-primary radius">
+                <i class="Hui-iconfont">&#xe600;</i> 添加监控
             </a>
             </shiro:hasPermission>
         </span>
@@ -66,43 +69,45 @@
     <table class="table table-border table-bordered table-bg">
         <thead>
         <tr>
-            <th scope="col" colspan="11">角色列表</th>
+            <th scope="col" colspan="12">监控列表</th>
         </tr>
         <tr class="text-c">
             <th width="25"><input type="checkbox" name="" value=""></th>
-            <th width="25">ID</th>
-            <th width="100">角色名称</th>
-            <th width="200">角色描述</th>
-            <th width="100">角色类型</th>
-            <th width="100">创建者</th>
-            <th width="120">创建时间</th>
-            <th width="100">修改者</th>
-            <th width="120">修改时间</th>
+            <th width="40">ID</th>
+            <th width="100">监控系统名称</th>
+            <th width="100">检测地址</th>
+            <th width="80">联系人列表</th>
+            <th width="140">电子邮箱</th>
+            <th width="80">角色</th>
+            <th width="60">登陆次数</th>
+            <th width="120">上一次登录IP</th>
+            <th width="120">上一次登录时间</th>
             <th width="60">状态</th>
             <th width="100">操作</th>
         </tr>
         </thead>
         <tbody>
-        <c:forEach items="${page.list}" var="role" varStatus="s">
+        <c:forEach items="${page.list}" var="user" varStatus="s">
             <tr class="text-c">
-                <td><input type="checkbox" value="${role.id}" name="id"></td>
+                <td><input type="checkbox" value="${user.id}" name="id"></td>
                 <td>${s.index + 1}</td>
-                <td>${role.role}</td>
-                <td>${role.description}</td>
-                <td>${role.roleType == 0 ? "超级管理员" : "普通管理员"}</td>
-                <td>${role.createUserName == null || role.createUserName == ""? role.createUser : role.createUserName}</td>
-                <td><fmt:formatDate value="${role.createTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                <td>${role.modifyUserName == null || role.modifyUserName == ""? role.modifyUser : role.modifyUserName}</td>
-                <td><fmt:formatDate value="${role.modifyTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
-                <td><span class="label ${role.available == 1 ? "label-success" : ""} radius">${role.available == 1 ? "可用" : "不可用"}</span></td>
+                <td>${user.username}</td>
+                <td>${user.fullname}</td>
+                <td>${user.telephone}</td>
+                <td>${user.email}</td>
+                <td>${user.role.role}</td>
+                <td>${user.loginCount}</td>
+                <td>${user.lastLoginIp}</td>
+                <td><fmt:formatDate value="${user.lastLoginTime}" pattern="yyyy-MM-dd HH:mm:ss" /></td>
+                <td><span class="label ${user.locked == 1 ? "label-success" : ""} radius">${user.locked == 1 ? "可用" : "被锁定"}</span></td>
                 <td>
-                    <shiro:hasPermission name="role:edit">
-                    <a title="编辑" href="javascript:" onclick="admin_role_edit('资源编辑','/role/toEdit','${role.id}','800')" class="ml-5" style="text-decoration:none">
+                    <shiro:hasPermission name="user:edit">
+                    <a title="编辑" href="javascript:" onclick="admin_user_edit('资源编辑','/monitor/toEdit','${user.id}','800')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6df;</i>
                     </a>
                     </shiro:hasPermission>
-                    <shiro:hasPermission name="role:delete">
-                    <a title="删除" href="javascript:" onclick="admin_role_del(this,'${role.id}')" class="ml-5" style="text-decoration:none">
+                    <shiro:hasPermission name="user:delete">
+                    <a title="删除" href="javascript:" onclick="admin_user_del(this,'${user.id}')" class="ml-5" style="text-decoration:none">
                         <i class="Hui-iconfont">&#xe6e2;</i>
                     </a>
                     </shiro:hasPermission>
@@ -149,21 +154,21 @@
         w		弹出层宽度（缺省调默认值）
         h		弹出层高度（缺省调默认值）
     */
-    /*管理员-角色-添加*/
-    function admin_role_add(title,url,w,h){
+    /*管理员-监控-添加*/
+    function admin_user_add(title,url,w,h){
         layer_show(title,url,w,h);
     }
-    /*管理员-角色-编辑*/
-    function admin_role_edit(title,url,id,w,h){
+    /*管理员-监控-编辑*/
+    function admin_user_edit(title,url,id,w,h){
         layer_show(title,url + '/' + id,w,h);
     }
 
-    /*管理员-角色-删除*/
-    function admin_role_del(obj,id){
+    /*管理员-监控-删除*/
+    function admin_user_del(obj,id){
         layer.confirm('确认要删除吗？',function(index){
             $.ajax({
                 type: 'GET',
-                url: '/role/delete/' + id,
+                url: '/monitor/delete/' + id,
                 dataType: 'json',
                 success: function(data){
                     $(obj).parents("tr").remove();

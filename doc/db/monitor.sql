@@ -1,16 +1,16 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost
-Source Server Version : 50719
+Source Server         : location
+Source Server Version : 50709
 Source Host           : localhost:3306
 Source Database       : monitor
 
 Target Server Type    : MYSQL
-Target Server Version : 50719
+Target Server Version : 50709
 File Encoding         : 65001
 
-Date: 2017-08-08 22:37:49
+Date: 2017-08-11 18:02:14
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -52,12 +52,12 @@ CREATE TABLE `m_resource` (
   `modify_time` datetime DEFAULT NULL COMMENT '修改时间',
   `available` int(1) unsigned DEFAULT '1' COMMENT '是否可用 0-不可用  1-可用',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of m_resource
 -- ----------------------------
-INSERT INTO `m_resource` VALUES ('1', '系统管理', '00', '', '255', null, null, 'system:manager', 'admin', '2017-08-07 22:01:02', null, null, '1');
+INSERT INTO `m_resource` VALUES ('1', '系统管理', '00', '', '255', null, null, 'system:manage', 'admin', '2017-08-07 22:01:02', '53c052b6-eb52-47ba-9cb2-76486a0', '2017-08-11 16:12:56', '1');
 INSERT INTO `m_resource` VALUES ('2', '用户管理', '01', '/user/list', '2', '1', '1', 'user:list', 'admin', '2017-08-07 22:04:23', 'admin', '2017-08-08 21:16:53', '1');
 INSERT INTO `m_resource` VALUES ('3', '资源管理', '01', '/resource/list', '0', '1', '1', 'resource:list', 'admin', '2017-08-07 22:05:17', 'admin', '2017-08-08 21:15:36', '1');
 INSERT INTO `m_resource` VALUES ('4', '添加资源', '10', '', '0', '3', '1/3', 'resource:add', 'admin', '2017-08-07 22:09:08', 'admin', '2017-08-08 21:16:23', '1');
@@ -70,6 +70,11 @@ INSERT INTO `m_resource` VALUES ('10', '角色管理', '01', '/role/list', '1', 
 INSERT INTO `m_resource` VALUES ('11', '添加角色', '10', '', '0', '10', null, 'role:add', 'admin', '2017-08-08 21:19:14', null, null, '1');
 INSERT INTO `m_resource` VALUES ('12', '删除角色', '10', '', '1', '10', null, 'role:delete', 'admin', '2017-08-08 21:19:33', null, null, '1');
 INSERT INTO `m_resource` VALUES ('13', '修改角色', '10', '', '2', '10', null, 'role:edit', 'admin', '2017-08-08 21:20:05', 'admin', '2017-08-08 21:20:19', '1');
+INSERT INTO `m_resource` VALUES ('14', '监控管理', '00', '', '1', null, null, 'monitor:manage', '53c052b6-eb52-47ba-9cb2-76486a0', '2017-08-11 16:12:39', null, null, '1');
+INSERT INTO `m_resource` VALUES ('15', '系统列表', '01', '/monitor/list', '0', '14', '14', 'monitor:list', '53c052b6-eb52-47ba-9cb2-76486a0', '2017-08-11 16:17:36', null, null, '1');
+INSERT INTO `m_resource` VALUES ('16', '添加系统', '10', '', '0', '15', null, 'monitor:add', '53c052b6-eb52-47ba-9cb2-76486a0', '2017-08-11 16:18:20', null, null, '1');
+INSERT INTO `m_resource` VALUES ('17', '删除系统', '10', '', '1', '15', null, 'monitor:delete', '53c052b6-eb52-47ba-9cb2-76486a0', '2017-08-11 16:18:46', null, null, '1');
+INSERT INTO `m_resource` VALUES ('18', '修改系统', '10', '', '2', '15', null, 'monitor:edit', '53c052b6-eb52-47ba-9cb2-76486a0', '2017-08-11 16:19:13', null, null, '1');
 
 -- ----------------------------
 -- Table structure for m_role
@@ -79,6 +84,7 @@ CREATE TABLE `m_role` (
   `id` varchar(32) NOT NULL COMMENT '主键ID，使用UUID生成',
   `role` varchar(100) NOT NULL COMMENT '角色名称',
   `description` varchar(255) DEFAULT NULL,
+  `role_type` int(1) unsigned DEFAULT '1' COMMENT '角色类型 0-超级管理员 1-普通管理员',
   `create_user` varchar(32) DEFAULT NULL COMMENT '创建用户id',
   `create_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '创建时间',
   `modify_user` varchar(32) DEFAULT NULL COMMENT '修改用户id',
@@ -90,7 +96,7 @@ CREATE TABLE `m_role` (
 -- ----------------------------
 -- Records of m_role
 -- ----------------------------
-INSERT INTO `m_role` VALUES ('b1c1b282-fea3-4606-85d3-3365e9e', '超级管理员', '', 'admin', '2017-08-08 21:42:34', null, null, '1');
+INSERT INTO `m_role` VALUES ('b1c1b282-fea3-4606-85d3-3365e9e', '超级管理员', '', '0', 'admin', '2017-08-08 21:42:34', '53c052b6-eb52-47ba-9cb2-76486a0', '2017-08-11 17:17:23', '1');
 
 -- ----------------------------
 -- Table structure for m_role_resource
@@ -101,24 +107,66 @@ CREATE TABLE `m_role_resource` (
   `role_id` varchar(32) NOT NULL COMMENT '角色ID',
   `resource_id` bigint(20) unsigned NOT NULL COMMENT '权限id',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=68 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of m_role_resource
 -- ----------------------------
-INSERT INTO `m_role_resource` VALUES ('1', 'b1c1b282-fea3-4606-85d3-3365e9e', '1');
-INSERT INTO `m_role_resource` VALUES ('2', 'b1c1b282-fea3-4606-85d3-3365e9e', '3');
-INSERT INTO `m_role_resource` VALUES ('3', 'b1c1b282-fea3-4606-85d3-3365e9e', '4');
-INSERT INTO `m_role_resource` VALUES ('4', 'b1c1b282-fea3-4606-85d3-3365e9e', '5');
-INSERT INTO `m_role_resource` VALUES ('5', 'b1c1b282-fea3-4606-85d3-3365e9e', '6');
-INSERT INTO `m_role_resource` VALUES ('6', 'b1c1b282-fea3-4606-85d3-3365e9e', '10');
-INSERT INTO `m_role_resource` VALUES ('7', 'b1c1b282-fea3-4606-85d3-3365e9e', '11');
-INSERT INTO `m_role_resource` VALUES ('8', 'b1c1b282-fea3-4606-85d3-3365e9e', '12');
-INSERT INTO `m_role_resource` VALUES ('9', 'b1c1b282-fea3-4606-85d3-3365e9e', '13');
-INSERT INTO `m_role_resource` VALUES ('10', 'b1c1b282-fea3-4606-85d3-3365e9e', '2');
-INSERT INTO `m_role_resource` VALUES ('11', 'b1c1b282-fea3-4606-85d3-3365e9e', '7');
-INSERT INTO `m_role_resource` VALUES ('12', 'b1c1b282-fea3-4606-85d3-3365e9e', '9');
-INSERT INTO `m_role_resource` VALUES ('13', 'b1c1b282-fea3-4606-85d3-3365e9e', '8');
+INSERT INTO `m_role_resource` VALUES ('50', 'b1c1b282-fea3-4606-85d3-3365e9e', '14');
+INSERT INTO `m_role_resource` VALUES ('51', 'b1c1b282-fea3-4606-85d3-3365e9e', '15');
+INSERT INTO `m_role_resource` VALUES ('52', 'b1c1b282-fea3-4606-85d3-3365e9e', '16');
+INSERT INTO `m_role_resource` VALUES ('53', 'b1c1b282-fea3-4606-85d3-3365e9e', '17');
+INSERT INTO `m_role_resource` VALUES ('54', 'b1c1b282-fea3-4606-85d3-3365e9e', '18');
+INSERT INTO `m_role_resource` VALUES ('55', 'b1c1b282-fea3-4606-85d3-3365e9e', '1');
+INSERT INTO `m_role_resource` VALUES ('56', 'b1c1b282-fea3-4606-85d3-3365e9e', '3');
+INSERT INTO `m_role_resource` VALUES ('57', 'b1c1b282-fea3-4606-85d3-3365e9e', '4');
+INSERT INTO `m_role_resource` VALUES ('58', 'b1c1b282-fea3-4606-85d3-3365e9e', '5');
+INSERT INTO `m_role_resource` VALUES ('59', 'b1c1b282-fea3-4606-85d3-3365e9e', '6');
+INSERT INTO `m_role_resource` VALUES ('60', 'b1c1b282-fea3-4606-85d3-3365e9e', '10');
+INSERT INTO `m_role_resource` VALUES ('61', 'b1c1b282-fea3-4606-85d3-3365e9e', '11');
+INSERT INTO `m_role_resource` VALUES ('62', 'b1c1b282-fea3-4606-85d3-3365e9e', '12');
+INSERT INTO `m_role_resource` VALUES ('63', 'b1c1b282-fea3-4606-85d3-3365e9e', '13');
+INSERT INTO `m_role_resource` VALUES ('64', 'b1c1b282-fea3-4606-85d3-3365e9e', '2');
+INSERT INTO `m_role_resource` VALUES ('65', 'b1c1b282-fea3-4606-85d3-3365e9e', '7');
+INSERT INTO `m_role_resource` VALUES ('66', 'b1c1b282-fea3-4606-85d3-3365e9e', '9');
+INSERT INTO `m_role_resource` VALUES ('67', 'b1c1b282-fea3-4606-85d3-3365e9e', '8');
+
+-- ----------------------------
+-- Table structure for m_system
+-- ----------------------------
+DROP TABLE IF EXISTS `m_system`;
+CREATE TABLE `m_system` (
+  `id` varchar(32) NOT NULL COMMENT '主键 UUID',
+  `system_name` varchar(100) DEFAULT NULL COMMENT '系统名称',
+  `is_email` int(1) unsigned DEFAULT '0' COMMENT '是否发送邮件 0-否 1-是',
+  `is_sms` int(1) unsigned DEFAULT '0' COMMENT '是否发送短信通知 0-否 1-是',
+  `status` int(1) unsigned DEFAULT '1' COMMENT '系统状态 0-宕机 1-正常',
+  `available` int(1) unsigned DEFAULT '1' COMMENT '是否进行监控 0-否 1-是',
+  `urls` longtext COMMENT '用于测试的url列表，可多个，多个url以英文逗号","隔开',
+  `contact` longtext COMMENT '用户id列表，可多个，多个用户id以英文逗号","隔开',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of m_system
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for m_task_logs
+-- ----------------------------
+DROP TABLE IF EXISTS `m_task_logs`;
+CREATE TABLE `m_task_logs` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT COMMENT '主键',
+  `system_name` varchar(100) DEFAULT NULL COMMENT '系统名称',
+  `monitor_url` varchar(255) DEFAULT NULL COMMENT '用于测试的URL',
+  `result` varchar(3) DEFAULT NULL COMMENT 'HTTP状态码',
+  `execute_time` datetime DEFAULT NULL COMMENT '测试时间',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of m_task_logs
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for m_user
@@ -146,7 +194,7 @@ CREATE TABLE `m_user` (
 -- ----------------------------
 -- Records of m_user
 -- ----------------------------
-INSERT INTO `m_user` VALUES ('53c052b6-eb52-47ba-9cb2-76486a0', 'admin', 'c40c85650500146571a380063bf9f754', '超级管理员', '', '', '', '0', null, null, 'admin', '2017-08-08 22:37:34', null, null, '1');
+INSERT INTO `m_user` VALUES ('53c052b6-eb52-47ba-9cb2-76486a0', 'admin', 'c40c85650500146571a380063bf9f754', '超级管理员', '', '', '', '7', '2017-08-11 17:17:35', '127.0.0.1', 'admin', '2017-08-08 22:37:34', null, null, '1');
 
 -- ----------------------------
 -- Table structure for m_user_role

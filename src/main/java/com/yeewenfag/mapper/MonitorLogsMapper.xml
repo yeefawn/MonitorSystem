@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yeewenfag.mapper.MonitorLogsMapper">
+  <resultMap id="BaseResultMap" type="com.yeewenfag.domain.MonitorLogs">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="system_name" jdbcType="VARCHAR" property="systemName" />
+    <result column="monitor_url" jdbcType="VARCHAR" property="monitorUrl" />
+    <result column="result" jdbcType="VARCHAR" property="result" />
+    <result column="execute_time" jdbcType="TIMESTAMP" property="executeTime" />
+  </resultMap>
+  <sql id="Example_Where_Clause">
+    <where>
+      <foreach collection="oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause">
+    <where>
+      <foreach collection="example.oredCriteria" item="criteria" separator="or">
+        <if test="criteria.valid">
+          <trim prefix="(" prefixOverrides="and" suffix=")">
+            <foreach collection="criteria.criteria" item="criterion">
+              <choose>
+                <when test="criterion.noValue">
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue">
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue">
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue">
+                  and ${criterion.condition}
+                  <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List">
+    id, system_name, monitor_url, result, execute_time
+  </sql>
+  <select id="selectByExample" parameterType="com.yeewenfag.domain.MonitorLogsExample" resultMap="BaseResultMap">
+    select
+    <if test="distinct">
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from m_task_logs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null">
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from m_task_logs
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from m_task_logs
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <delete id="deleteByExample" parameterType="com.yeewenfag.domain.MonitorLogsExample">
+    delete from m_task_logs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="com.yeewenfag.domain.MonitorLogs">
+    insert into m_task_logs (id, system_name, monitor_url, 
+      result, execute_time)
+    values (#{id,jdbcType=BIGINT}, #{systemName,jdbcType=VARCHAR}, #{monitorUrl,jdbcType=VARCHAR}, 
+      #{result,jdbcType=VARCHAR}, #{executeTime,jdbcType=TIMESTAMP})
+  </insert>
+  <insert id="insertSelective" parameterType="com.yeewenfag.domain.MonitorLogs">
+    insert into m_task_logs
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="systemName != null">
+        system_name,
+      </if>
+      <if test="monitorUrl != null">
+        monitor_url,
+      </if>
+      <if test="result != null">
+        result,
+      </if>
+      <if test="executeTime != null">
+        execute_time,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="systemName != null">
+        #{systemName,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorUrl != null">
+        #{monitorUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="executeTime != null">
+        #{executeTime,jdbcType=TIMESTAMP},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="com.yeewenfag.domain.MonitorLogsExample" resultType="java.lang.Long">
+    select count(*) from m_task_logs
+    <if test="_parameter != null">
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map">
+    update m_task_logs
+    <set>
+      <if test="record.id != null">
+        id = #{record.id,jdbcType=BIGINT},
+      </if>
+      <if test="record.systemName != null">
+        system_name = #{record.systemName,jdbcType=VARCHAR},
+      </if>
+      <if test="record.monitorUrl != null">
+        monitor_url = #{record.monitorUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="record.result != null">
+        result = #{record.result,jdbcType=VARCHAR},
+      </if>
+      <if test="record.executeTime != null">
+        execute_time = #{record.executeTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map">
+    update m_task_logs
+    set id = #{record.id,jdbcType=BIGINT},
+      system_name = #{record.systemName,jdbcType=VARCHAR},
+      monitor_url = #{record.monitorUrl,jdbcType=VARCHAR},
+      result = #{record.result,jdbcType=VARCHAR},
+      execute_time = #{record.executeTime,jdbcType=TIMESTAMP}
+    <if test="_parameter != null">
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="com.yeewenfag.domain.MonitorLogs">
+    update m_task_logs
+    <set>
+      <if test="systemName != null">
+        system_name = #{systemName,jdbcType=VARCHAR},
+      </if>
+      <if test="monitorUrl != null">
+        monitor_url = #{monitorUrl,jdbcType=VARCHAR},
+      </if>
+      <if test="result != null">
+        result = #{result,jdbcType=VARCHAR},
+      </if>
+      <if test="executeTime != null">
+        execute_time = #{executeTime,jdbcType=TIMESTAMP},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.yeewenfag.domain.MonitorLogs">
+    update m_task_logs
+    set system_name = #{systemName,jdbcType=VARCHAR},
+      monitor_url = #{monitorUrl,jdbcType=VARCHAR},
+      result = #{result,jdbcType=VARCHAR},
+      execute_time = #{executeTime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

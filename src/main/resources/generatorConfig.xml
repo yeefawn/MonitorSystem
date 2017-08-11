@@ -54,9 +54,10 @@
 		<!-- enableDeleteByExample:Delete语句中加入where条件查询，默认为true开启 -->
 		<!-- enableSelectByExample:Select多条语句中加入where条件查询，默认为true开启 -->
 		<!-- selectByExampleQueryId:Select单个对象语句中加入where条件查询，默认为true开启 -->
-		<table tableName="m_user" domainObjectName="User"></table>
-		<!--<table tableName="m_role" domainObjectName="Role"></table>
-		<table tableName="m_resource" domainObjectName="Resource"></table>
+		<table tableName="m_system" domainObjectName="Monitor"></table>
+		<!--<table tableName="m_task_logs" domainObjectName="MonitorLogs"></table>-->
+		<!--<table tableName="m_role" domainObjectName="Role"></table>-->
+		<!--<table tableName="m_resource" domainObjectName="Resource"></table>
 		<table tableName="m_logs" domainObjectName="Logs"></table>-->
 
 		

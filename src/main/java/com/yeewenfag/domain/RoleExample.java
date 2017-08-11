@@ -315,6 +315,66 @@ public class RoleExample {
             return (Criteria) this;
         }
 
+        public Criteria andRoleTypeIsNull() {
+            addCriterion("role_type is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeIsNotNull() {
+            addCriterion("role_type is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeEqualTo(Integer value) {
+            addCriterion("role_type =", value, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeNotEqualTo(Integer value) {
+            addCriterion("role_type <>", value, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeGreaterThan(Integer value) {
+            addCriterion("role_type >", value, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeGreaterThanOrEqualTo(Integer value) {
+            addCriterion("role_type >=", value, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeLessThan(Integer value) {
+            addCriterion("role_type <", value, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeLessThanOrEqualTo(Integer value) {
+            addCriterion("role_type <=", value, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeIn(List<Integer> values) {
+            addCriterion("role_type in", values, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeNotIn(List<Integer> values) {
+            addCriterion("role_type not in", values, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeBetween(Integer value1, Integer value2) {
+            addCriterion("role_type between", value1, value2, "roleType");
+            return (Criteria) this;
+        }
+
+        public Criteria andRoleTypeNotBetween(Integer value1, Integer value2) {
+            addCriterion("role_type not between", value1, value2, "roleType");
+            return (Criteria) this;
+        }
+
         public Criteria andCreateUserIsNull() {
             addCriterion("create_user is null");
             return (Criteria) this;
